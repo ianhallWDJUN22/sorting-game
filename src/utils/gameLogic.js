@@ -1,9 +1,17 @@
 // src/utils/gameLogic.js
 
+// Function to determine the number of colors based on the current level
+const getNumColorsForLevel = (level) => {
+    if (level <= 5) return 6;
+    if (level <= 10) return 7;
+    if (level <= 15) return 8;
+    if (level <= 20) return 9;
+    return 10;
+};
+
 // Function to generate a solvable game piece sorting puzzle
-export function generateSolvablePuzzle(piecesPerTube = 4, emptyTubes = 2) {
-    // Step 1: Randomly determine the number of colors (between 6 and 10)
-    const numColors = Math.floor(Math.random() * 5) + 6; // Randomly choose between 6 and 10
+export function generateSolvablePuzzle(level, piecesPerTube = 4, emptyTubes = 2) {
+    const numColors = getNumColorsForLevel(level); // Determine number of colors based on level
     let tubes = [];
     let allColors = [];
     let totalTubes = numColors + emptyTubes;

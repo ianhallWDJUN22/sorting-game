@@ -3,6 +3,7 @@ import { generateSolvablePuzzle } from "../utils/gameLogic";
 import "../styles/GameBoard.css";
 
 const GameBoard = () => {
+  // State variables to manage game state
   const [tubes, setTubes] = useState([]);
   const [initialTubes, setInitialTubes] = useState([]);
   const [selectedTube, setSelectedTube] = useState(null);
@@ -12,12 +13,14 @@ const GameBoard = () => {
   const [recentlyMoved, setRecentlyMoved] = useState([]);
   const [level, setLevel] = useState(1);
 
+  // Effect to initialize the first puzzle on component mount
   useEffect(() => {
     startNewPuzzle();
-  }, []);
+  }, [level]);
 
+  // Function to generate a new puzzle and reset game state
   const startNewPuzzle = () => {
-    const { tubes: initialTubesState } = generateSolvablePuzzle();
+    const { tubes: initialTubesState } = generateSolvablePuzzle(level);
     setTubes(initialTubesState);
     setInitialTubes(initialTubesState.map(tube => [...tube]));
     setMoveHistory([]);
@@ -27,13 +30,14 @@ const GameBoard = () => {
     setIsSolved(false);
   };
 
+  // Function to progress to the next level and generate a new puzzle
   const handleNextLevel = () => {
     setLevel(prevLevel => prevLevel + 1);
-    startNewPuzzle();
   };
 
+  // Handles user interaction when clicking on a tube
   const handleTubeClick = (index) => {
-    if (isSolved) return;
+    if (isSolved) return; // Prevents interaction if puzzle is solved
     
     if (selectedTube === null) {
       if (tubes[index].length > 0) {
@@ -45,6 +49,7 @@ const GameBoard = () => {
         const newTubes = tubes.map(tube => [...tube]);
         let movingPieces = [newTubes[selectedTube].pop()];
         
+        // Automatically move matching pieces in a stack
         while (
           newTubes[selectedTube].length > 0 && 
           newTubes[selectedTube][newTubes[selectedTube].length - 1] === movingPieces[0] && 
@@ -53,26 +58,24 @@ const GameBoard = () => {
           movingPieces.push(newTubes[selectedTube].pop());
         }
 
+        // Validates and executes the move
         if (
           newTubes[index].length < 4 && 
           (newTubes[index].length === 0 || newTubes[index][newTubes[index].length - 1] === movingPieces[0])
-        ) if (
-            newTubes[index].length < 4 && 
-            (newTubes[index].length === 0 || newTubes[index][newTubes[index].length - 1] === movingPieces[0])
-          ) {
-            newTubes[index].push(...movingPieces);
+        ) {
+          newTubes[index].push(...movingPieces);
           
-            // 🔹 Ensure recentlyMoved is updated properly
-            const movePositions = movingPieces.map((_, i) => ({
-              tube: index,
-              position: newTubes[index].length - 1 - i
-            }));
-            setRecentlyMoved(movePositions);
+          // Update recently moved pieces for animation
+          const movePositions = movingPieces.map((_, i) => ({
+            tube: index,
+            position: newTubes[index].length - 1 - i
+          }));
+          setRecentlyMoved(movePositions);
           
-            setTubes(newTubes);
-            setMoveHistory([...moveHistory, { from: selectedTube, to: index, pieces: movingPieces.length }]);
-            checkWinCondition(newTubes);
-          } else {
+          setTubes(newTubes);
+          setMoveHistory([...moveHistory, { from: selectedTube, to: index, pieces: movingPieces.length }]);
+          checkWinCondition(newTubes);
+        } else {
           setSelectedTube(null);
           setHighlightedPieces([]);
           return;
@@ -83,6 +86,7 @@ const GameBoard = () => {
     }
   };
 
+  // Highlights a stack of matching pieces when a tube is selected
   const highlightStack = (tubeIndex) => {
     let stackToHighlight = [];
     let tube = tubes[tubeIndex];
@@ -102,6 +106,7 @@ const GameBoard = () => {
     setHighlightedPieces(stackToHighlight);
   };
 
+  // Handles undoing the last move
   const handleUndo = () => {
     if (moveHistory.length === 0 || isSolved) return;
     const lastMove = moveHistory[moveHistory.length - 1];
@@ -112,6 +117,7 @@ const GameBoard = () => {
     setMoveHistory(moveHistory.slice(0, -1));
   };
 
+  // Resets the current puzzle to its initial state
   const handleReset = () => {
     setTubes(initialTubes.map(tube => [...tube]));
     setMoveHistory([]);
@@ -121,6 +127,7 @@ const GameBoard = () => {
     setIsSolved(false);
   };
 
+  // Checks if the puzzle has been successfully solved
   const checkWinCondition = (currentTubes) => {
     const allSorted = currentTubes.every(
       tube => tube.length === 0 || (tube.length === 4 && new Set(tube).size === 1)
@@ -166,3 +173,4 @@ const GameBoard = () => {
 };
 
 export default GameBoard;
+

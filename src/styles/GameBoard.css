@@ -41,16 +41,16 @@ body {
 }
 
 /* Colors for Pieces */
-.piece.Color1 { background-color: #ff1900; box-shadow: 0 0 5px #ff4500; } /* Bright Orange-Red */
-.piece.Color2 { background-color: #0055ff; box-shadow: 0 0 5px #0055ff; } /* Vivid Blue */
+.piece.Color1 { background-color: #d4220e; box-shadow: 0 0 5px #ff4500; } /* Bright Orange-Red */
+.piece.Color2 { background-color: #094fdd; box-shadow: 0 0 5px #0055ff; } /* Vivid Blue */
 .piece.Color3 { background-color: rgb(164, 107, 255); box-shadow: 0 0 5px rgb(144, 107, 255); } /* Teal Green */
-.piece.Color4 { background-color: #fff200; box-shadow: 0 0 5px #e6b800; } /* Mustard Yellow */
+.piece.Color4 { background-color: #eadf0b; box-shadow: 0 0 5px #e6b800; } /* Mustard Yellow */
 .piece.Color5 { background-color: #6a00ff; box-shadow: 0 0 5px #6a00ff; } /* Deep Violet */
 .piece.Color6 { background-color: #01f9f9; box-shadow: 0 0 5px #00e6e6; } /* Neon Cyan */
 .piece.Color7 { background-color: #ff8800; box-shadow: 0 0 5px #ff8800; } /* Bright Amber */
-.piece.Color8 { background-color: rgb(2, 180, 64); box-shadow: 0 0 5px rgb(1, 205, 1); } /* Hot Pink */
+.piece.Color8 { background-color: rgb(2, 180, 112); box-shadow: 0 0 5px rgb(1, 205, 1); } /* Hot Pink */
 .piece.Color9 { background-color: #7cff4d; box-shadow: 0 0 5px #29ff00; } /* Digital Green */
-.piece.Color10 { background-color: #ff3cef; box-shadow: 0 0 5px #ff0055; } /* Crimson Red */
+.piece.Color10 { background-color: #da3bcd; box-shadow: 0 0 5px #ff0055; } /* Crimson Red */
 
 /* Pieces as Data Packets */
 .piece {
@@ -107,7 +107,7 @@ body {
 
 /* Hacker-Style Buttons */
 button {
-    background: black;
+    background: rgb(0, 19, 3);
     color: #00ff00;
     border: 1px solid #00ff00;
     padding: 10px 20px;
