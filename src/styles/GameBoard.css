@@ -1,0 +1,156 @@
+/* GameBoard Styles - Hacker Theme */
+
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+body {
+    background-color: #0d0d0d;
+    color: #33ff33;
+    font-family: 'VT323', monospace;
+    /* Alternative font option */
+    /* font-family: 'Courier New', monospace; */
+}
+
+/* Game Board */
+.game-board {
+    display: flex;
+    justify-content: center;
+    gap: 22px;
+    margin-top: 20px;
+}
+
+/* Tubes as Data Banks */
+.tube {
+    display: flex;
+    flex-direction: column-reverse; /* Ensures pieces stack from bottom to top */
+    align-items: center;
+    width: 60px;
+    border: 2px solid #00ff00;
+    background: rgba(0, 255, 0, 0.1);
+    box-shadow: 0px 0px 10px #00ff00;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: border-color 0.3s;
+    padding: 2px;
+    padding-top:10px;
+}
+
+.tube.selected {
+    border: 2px solid #60ffef;
+    box-shadow: 0px 0px 15px #00ffbb;
+    
+}
+
+/* Colors for Pieces */
+.piece.Color1 { background-color: #ff1900; box-shadow: 0 0 5px #ff4500; } /* Bright Orange-Red */
+.piece.Color2 { background-color: #0055ff; box-shadow: 0 0 5px #0055ff; } /* Vivid Blue */
+.piece.Color3 { background-color: rgb(164, 107, 255); box-shadow: 0 0 5px rgb(144, 107, 255); } /* Teal Green */
+.piece.Color4 { background-color: #fff200; box-shadow: 0 0 5px #e6b800; } /* Mustard Yellow */
+.piece.Color5 { background-color: #6a00ff; box-shadow: 0 0 5px #6a00ff; } /* Deep Violet */
+.piece.Color6 { background-color: #01f9f9; box-shadow: 0 0 5px #00e6e6; } /* Neon Cyan */
+.piece.Color7 { background-color: #ff8800; box-shadow: 0 0 5px #ff8800; } /* Bright Amber */
+.piece.Color8 { background-color: rgb(2, 180, 64); box-shadow: 0 0 5px rgb(1, 205, 1); } /* Hot Pink */
+.piece.Color9 { background-color: #7cff4d; box-shadow: 0 0 5px #29ff00; } /* Digital Green */
+.piece.Color10 { background-color: #ff3cef; box-shadow: 0 0 5px #ff0055; } /* Crimson Red */
+
+/* Pieces as Data Packets */
+.piece {
+    width: 50px;
+    height: 30px;
+    margin: 4px 0;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    transition: transform 0.1s;
+}
+
+.piece.highlighted {
+     transform: scale(1.06);
+     animation: flicker-in-highlight 0.15s;
+     box-shadow: 0px 0px 10px #558b8d;
+}
+
+@keyframes flicker-in {
+    0% { opacity: 0; transform: scale(0.9); }
+    20% { opacity: 1; transform: scale(1.1); }
+    40% { opacity: 0; }
+    60% { opacity: 1; }
+    80% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+.flicker {
+    animation: flicker-in 0.1s ease-in;
+}
+
+@keyframes flicker-in-highlight {
+    0% { opacity: .5; transform: scale(0.9); }
+    20% { opacity: 1; transform: scale(1.05); }
+    40% { opacity: .75; }
+    60% { opacity: 1; }
+    80% { opacity: .85; }
+    100% { opacity: 1; }
+}
+
+  
+
+
+/* Alternative pixelated effect for pieces */
+/* .piece { image-rendering: pixelated; } */
+
+.controls {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+/* Hacker-Style Buttons */
+button {
+    background: black;
+    color: #00ff00;
+    border: 1px solid #00ff00;
+    padding: 10px 20px;
+    font-family: 'VT323', monospace;
+    font-size:15px;
+    text-transform: uppercase;
+    transition: 0.2s;
+    margin: 30px;
+}
+
+button:hover {
+    background: #00ff00;
+    color: black;
+    box-shadow: 0px 0px 5px #00ff00;
+}
+
+/* Alternative scanline effect for background */
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        rgba(0, 37, 0, 0.1) 0px, rgba(0, 183, 0, 0.1) 1px,
+        transparent 2px, transparent 4px
+    );
+    pointer-events: none;
+    z-index: 10;
+}
+
+.win-message {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.win-message.flicker p {
+    animation: flicker-in .7s;
+}
+
+.win-message p {
+    font-size: 30px;
+    min-height: 45px;
+}
