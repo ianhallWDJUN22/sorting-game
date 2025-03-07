@@ -3,7 +3,7 @@ import GameBoard from "./components/GameBoard";
 
 function App() {
   return (
-    <div class= "container">
+    <div className= "container">
       <h1>Sorting Game</h1>
       <GameBoard />
     </div>

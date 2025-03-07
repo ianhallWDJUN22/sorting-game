@@ -9,8 +9,8 @@ const getNumColorsForLevel = (level) => {
     return 10;
 };
 
-// Function to generate a solvable game piece sorting puzzle
-export function generateSolvablePuzzle(level, piecesPerTube = 4, emptyTubes = 2) {
+// Function to generate a puzzle
+export function generatePuzzle(level, piecesPerTube = 4, emptyTubes = 2) {
     const numColors = getNumColorsForLevel(level); // Determine number of colors based on level
     let tubes = [];
     let allColors = [];

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { generateSolvablePuzzle } from "../utils/gameLogic";
+import { generatePuzzle } from "../utils/gameLogic";
 import "../styles/GameBoard.css";
 
 const GameBoard = () => {
@@ -12,28 +12,56 @@ const GameBoard = () => {
   const [isSolved, setIsSolved] = useState(false);
   const [recentlyMoved, setRecentlyMoved] = useState([]);
   const [level, setLevel] = useState(1);
-
+  const [showInstructions, setShowInstructions] = useState(false);
+  const [closingModal, setClosingModal] = useState(false);
+  
+  
   // Effect to initialize the first puzzle on component mount
   useEffect(() => {
     startNewPuzzle();
   }, [level]);
 
+    // Function to determine difficulty label based on level
+    const getDifficultyLabel = (level) => {
+        if (level <= 5) return "Easy";
+        if (level <= 10) return "Intermediate";
+        if (level <= 15) return "Hard";
+        if (level <= 20) return "Expert";
+        return "Master";
+      };
+
   // Function to generate a new puzzle and reset game state
   const startNewPuzzle = () => {
-    const { tubes: initialTubesState } = generateSolvablePuzzle(level);
-    setTubes(initialTubesState);
-    setInitialTubes(initialTubesState.map(tube => [...tube]));
-    setMoveHistory([]);
-    setSelectedTube(null);
-    setHighlightedPieces([]);
-    setRecentlyMoved([]);
-    setIsSolved(false);
+    setTubes([]); // Clear tubes temporarily for animation reset
+    setTimeout(() => {
+      const { tubes: initialTubesState } = generatePuzzle(level);
+      setTubes(initialTubesState);
+      setInitialTubes(initialTubesState.map(tube => [...tube]));
+      setMoveHistory([]);
+      setSelectedTube(null);
+      setHighlightedPieces([]);
+      setRecentlyMoved([]);
+      setIsSolved(false);
+    }, .01); // Small delay to trigger re-animation
   };
 
   // Function to progress to the next level and generate a new puzzle
   const handleNextLevel = () => {
     setLevel(prevLevel => prevLevel + 1);
   };
+
+    // Function to toggle instructions modal
+    const toggleInstructions = () => {
+        if (showInstructions) {
+          setClosingModal(true); // Start flicker-out animation
+          setTimeout(() => {
+            setShowInstructions(false); // Hide modal after animation
+            setClosingModal(false);
+          }, 300); // Matches flicker-out animation duration
+        } else {
+          setShowInstructions(true); // Show modal with flicker-in animation
+        }
+      };
 
   // Handles user interaction when clicking on a tube
   const handleTubeClick = (index) => {
@@ -137,12 +165,48 @@ const GameBoard = () => {
 
   return (
     <div>
-      <h2>Level {level}</h2>
+      <div className="instructions-container">
+        <button className="info-button" onClick={toggleInstructions}>?</button>
+      </div>
+      {/* Instructions Modal */}
+      {showInstructions && (
+        <div className={`modal-overlay ${closingModal ? "flicker-out-modal" : "flicker-in-modal"}`}>
+          <div className="modal">
+              <button className="close-button" onClick={toggleInstructions}>X</button>
+            <div className="modal-header">
+              <h2 className="modal-header-text">How To Play</h2>
+            </div>
+            <div className="modal-content">
+              <div>
+                <h3>Objective:</h3>
+                <p className="objective-text">Sort all the color tiles so that each tube contains only one color.</p>
+              </div>
+              <div>
+              <h3>Rules:</h3>
+              <ul>
+                <li>Click a tube to select the topmost tile</li>
+                <li>Click another tube to move the tile there</li>
+                <li>You may only move a tile onto a tile of the same color or to an empty tube</li>
+                <li>Undo your last move with the "Undo" button</li>
+                <li>Reset the current puzzle with the "Reset" button</li>
+                <li>Complete the puzzle to advance to the next level</li>
+                <li>The difficulty will increase as you play - from "Easy" to "Master"</li>
+                <li>-</li>
+                <li>Happy sorting!</li>
+              </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      <div className="level-header">
+      <h2>Level {level} - <span className="difficulty-label">{getDifficultyLabel(level)}</span></h2>
+      </div>
       <div className="game-board">
         {tubes.map((tube, index) => (
           <div 
             key={index} 
-            className={`tube ${selectedTube === index ? "selected" : ""}`} 
+            className={`tube flicker-in-tubes ${selectedTube === index ? "selected" : ""}`} 
             onClick={() => handleTubeClick(index)}
           >
             {tube.map((piece, i) => (
@@ -156,18 +220,19 @@ const GameBoard = () => {
           </div>
         ))}
       </div>
-      <div>
-        <div className="controls">
+      <div className="bottom-buttons">
+       {!isSolved && ( <div className="controls">
           <button onClick={handleUndo} disabled={moveHistory.length === 0 || isSolved}>Undo</button>
-          <button onClick={handleReset}>Restart</button>
-        </div>
+          <button onClick={handleReset}>Reset</button>
       </div>
+       )}
       {isSolved && (
         <div className="win-message flicker">
           <p>Puzzle Solved!</p>
           <button onClick={handleNextLevel}>Next Level</button>
         </div>
       )}
+      </div>
     </div>
   );
 };

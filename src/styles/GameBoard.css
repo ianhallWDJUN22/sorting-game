@@ -1,156 +1,608 @@
 /* GameBoard Styles - Hacker Theme */
 
-@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=VT323&display=swap");
 
 body {
-    background-color: #0d0d0d;
-    color: #33ff33;
-    font-family: 'VT323', monospace;
-    /* Alternative font option */
-    /* font-family: 'Courier New', monospace; */
+  background-color: #0d0d0d;
+  color: #33ff33;
+  font-family: "VT323", monospace;
+  /* Alternative font option */
+  /* font-family: 'Courier New', monospace; */
 }
 
 /* Game Board */
 .game-board {
-    display: flex;
-    justify-content: center;
-    gap: 22px;
-    margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 22px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 /* Tubes as Data Banks */
 .tube {
-    display: flex;
-    flex-direction: column-reverse; /* Ensures pieces stack from bottom to top */
-    align-items: center;
-    width: 60px;
-    border: 2px solid #00ff00;
-    background: rgba(0, 255, 0, 0.1);
-    box-shadow: 0px 0px 10px #00ff00;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: border-color 0.3s;
-    padding: 2px;
-    padding-top:10px;
+  display: flex;
+  flex-direction: column-reverse; /* Ensures pieces stack from bottom to top */
+  align-items: center;
+  width: 60px;
+  border: 2px solid #00ff00;
+  background: rgba(0, 255, 0, 0.1);
+  box-shadow: 0px 0px 10px #00ff00;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: border-color 0.3s;
+  padding: 2px;
+  padding-top: 10px;
+  min-height: 152px;
 }
 
 .tube.selected {
-    border: 2px solid #60ffef;
-    box-shadow: 0px 0px 15px #00ffbb;
-    
+  border: 2px solid #60ffef;
+  box-shadow: 0px 0px 15px #00ffbb;
 }
-
-/* Colors for Pieces */
-.piece.Color1 { background-color: #d4220e; box-shadow: 0 0 5px #ff4500; } /* Bright Orange-Red */
-.piece.Color2 { background-color: #094fdd; box-shadow: 0 0 5px #0055ff; } /* Vivid Blue */
-.piece.Color3 { background-color: rgb(164, 107, 255); box-shadow: 0 0 5px rgb(144, 107, 255); } /* Teal Green */
-.piece.Color4 { background-color: #eadf0b; box-shadow: 0 0 5px #e6b800; } /* Mustard Yellow */
-.piece.Color5 { background-color: #6a00ff; box-shadow: 0 0 5px #6a00ff; } /* Deep Violet */
-.piece.Color6 { background-color: #01f9f9; box-shadow: 0 0 5px #00e6e6; } /* Neon Cyan */
-.piece.Color7 { background-color: #ff8800; box-shadow: 0 0 5px #ff8800; } /* Bright Amber */
-.piece.Color8 { background-color: rgb(2, 180, 112); box-shadow: 0 0 5px rgb(1, 205, 1); } /* Hot Pink */
-.piece.Color9 { background-color: #7cff4d; box-shadow: 0 0 5px #29ff00; } /* Digital Green */
-.piece.Color10 { background-color: #da3bcd; box-shadow: 0 0 5px #ff0055; } /* Crimson Red */
 
 /* Pieces as Data Packets */
 .piece {
-    width: 50px;
-    height: 30px;
-    margin: 4px 0;
-    border-radius: 5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    transition: transform 0.1s;
+  width: 50px;
+  height: 30px;
+  margin: 4px 0;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.1s;
 }
 
 .piece.highlighted {
-     transform: scale(1.06);
-     animation: flicker-in-highlight 0.15s;
-     box-shadow: 0px 0px 10px #558b8d;
+  transform: scale(1.06);
+  animation: flicker-in-highlight 0.2s;
+  box-shadow: 0px 0px 10px #558b8d;
 }
 
+/* Colors for Pieces */
+.piece.Color1 {
+  background-color: #d4220e;
+  box-shadow: 0 0 5px #ff4500;
+} /* Bright Orange-Red */
+.piece.Color2 {
+  background-color: #0b54e7;
+  box-shadow: 0 0 5px #0055ff;
+} /* Vivid Blue */
+.piece.Color3 {
+  background-color: rgb(144, 107, 255);
+  box-shadow: 0 0 5px rgb(144, 107, 255);
+} /* Teal Green */
+.piece.Color4 {
+  background-color: #eadf0b;
+  box-shadow: 0 0 5px #e6b800;
+} /* Mustard Yellow */
+.piece.Color5 {
+  background-color: #7300ed;
+  box-shadow: 0 0 5px #6a00ff;
+} /* Deep Violet */
+.piece.Color6 {
+  background-color: #01f9f9;
+  box-shadow: 0 0 5px #00e6e6;
+} /* Neon Cyan */
+.piece.Color7 {
+  background-color: #ff8800;
+  box-shadow: 0 0 5px #ff8800;
+} /* Bright Amber */
+.piece.Color8 {
+  background-color: rgb(2, 180, 112);
+  box-shadow: 0 0 5px rgb(1, 205, 1);
+} /* Hot Pink */
+.piece.Color9 {
+  background-color: #7cff4d;
+  box-shadow: 0 0 5px #29ff00;
+} /* Digital Green */
+.piece.Color10 {
+  background-color: #da3bcd;
+  box-shadow: 0 0 5px #ff0055;
+} /* Crimson Red */
+
+
 @keyframes flicker-in {
-    0% { opacity: 0; transform: scale(0.9); }
-    20% { opacity: 1; transform: scale(1.1); }
-    40% { opacity: 0; }
-    60% { opacity: 1; }
-    80% { opacity: 0; }
-    100% { opacity: 1; }
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  20% {
+    opacity: 1;
+    transform: scale(1.09);
+  }
+  40% {
+    opacity: 0;
+  }
+  60% {
+    opacity: 1;
+  }
+  80% {
+    opacity: .5;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .flicker {
-    animation: flicker-in 0.1s ease-in;
+  animation: flicker-in .11s ease-in;
 }
 
 @keyframes flicker-in-highlight {
-    0% { opacity: .5; transform: scale(0.9); }
-    20% { opacity: 1; transform: scale(1.05); }
-    40% { opacity: .75; }
-    60% { opacity: 1; }
-    80% { opacity: .85; }
-    100% { opacity: 1; }
+  0% {
+    opacity: 0.5;
+    transform: scale(0.9);
+  }
+  20% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  40% {
+    opacity: 0.75;
+  }
+  60% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 1;
+  }
 }
-
-  
-
 
 /* Alternative pixelated effect for pieces */
 /* .piece { image-rendering: pixelated; } */
 
-.controls {
+.level-header {
     display: flex;
     justify-content: center;
-    margin-top: 20px;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
 }
 
 /* Hacker-Style Buttons */
 button {
-    background: rgb(0, 19, 3);
-    color: #00ff00;
-    border: 1px solid #00ff00;
-    padding: 10px 20px;
-    font-family: 'VT323', monospace;
-    font-size:15px;
-    text-transform: uppercase;
-    transition: 0.2s;
-    margin: 30px;
+  background: rgb(0, 19, 3);
+  color: #00ff00;
+  border: 1px solid #00ff00;
+  padding: 10px 20px;
+  font-family: "VT323", monospace;
+  font-size: 15px;
+  text-transform: uppercase;
+  transition: 0.2s;
+  margin: 30px;
 }
 
 button:hover {
-    background: #00ff00;
-    color: black;
-    box-shadow: 0px 0px 5px #00ff00;
+  background: #00ff00;
+  color: black;
+  box-shadow: 0px 0px 5px #00ff00;
 }
 
 /* Alternative scanline effect for background */
 body::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: repeating-linear-gradient(
-        rgba(0, 37, 0, 0.1) 0px, rgba(0, 183, 0, 0.1) 1px,
-        transparent 2px, transparent 4px
-    );
-    pointer-events: none;
-    z-index: 10;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    rgba(0, 37, 0, 0.1) 0px,
+    rgba(0, 183, 0, 0.1) 1px,
+    transparent 2px,
+    transparent 4px
+  );
+  pointer-events: none;
+  z-index: 10;
+}
+
+@keyframes flicker-in-tubes {
+    0% { opacity: 0; transform: translateX(0px); }
+    10% { opacity: 1; transform: translateX(0px); }
+    20% { opacity: 0.7; transform: translateX(0px); }
+    30% { opacity: 1; transform: translateX(1px); }
+    40% { opacity: 0.85; transform: translateX(0px); }
+    50% { opacity: 1; transform: translateX(1px); }
+    60% { opacity: 0.9; transform: translateX(0px); }
+    70% { opacity: 1; transform: translateX(1px); }
+    80% { opacity: .9; transform: translateX(0px); }
+    90% { opacity: 1; transform: translateX(0px); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+/* Apply this animation when tubes first appear */
+.flicker-in-tubes {
+    animation: flicker-in-tubes 0.5s ease-in-out;
+}
+
+@keyframes flicker-in-modal {
+  0% {
+    opacity: 0.9;
+    transform: scale(0.9);
+  }
+  20% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes flicker-out-modal {
+    0% { opacity: 1; transform: scale(1); }
+    20% { opacity: 0.8; }
+    40% { opacity: 1; transform: scale(1.02); }
+    60% { opacity: 0.9; }
+    80% { opacity: 0; transform: scale(0.95); }
+    100% { opacity: 0; }
+  }
+
+.flicker-in-modal {
+  animation: flicker-modal-content 0.4s ease-in-out;
+}
+
+.flicker-out-modal {
+  animation: flicker-out-modal .35s ease-in-out;
+}
+
+@keyframes flicker-modal-content {
+    0% { opacity: .7; transform: translateX(0px); }
+    10% { opacity: 1; transform: translateX(2px); }
+    20% { opacity: 0.8; transform: translateX(0px); }
+    30% { opacity: 1; transform: translateX(1px) }
+    40% { opacity: 1; transform: translateX(0px); }
+    50% { opacity: 1; transform: translateX(2px) }
+    60% { opacity: 1; transform: translateX(0px); }
+    70% { opacity: 1; transform: translateX(1px); }
+    80% { opacity: 1; transform: translateX(0px); }
+    90% { opacity: 1; transform: translateX(0px); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+.flicker-modal-content {
+    animation: flicker-modal-content 0.3;
+}
+.modal-content {
+    animation: flicker-modal-content 0.4s ease-in-out;
 }
 
 .win-message {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 
 .win-message.flicker p {
-    animation: flicker-in .7s;
+  animation: flicker-in 0.7s;
 }
 
 .win-message p {
-    font-size: 30px;
-    min-height: 45px;
+  font-size: 30px;
+  min-height: 45px;
+}
+
+/* "?" Button */
+.info-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  font-weight: bold;
+  color: #00ff00;
+  cursor: pointer;
+  padding: 10px 17px;
+}
+
+.info-button:hover {
+  background-color: #00ff00;
+}
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Modal Window */
+.modal {
+  background: #222;
+  padding: 20px;
+  border-radius: 8px;
+  width: 525px;
+  text-align: center;
+  box-shadow: 0 0 10px #00ff00;
+}
+
+/* Modal Header */
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  text-align: center;
+  font-size: 25px;
+  margin-bottom: 0px;
+  padding: 0px;
+}
+
+.modal-header-text {
+  padding: 0px;
+  margin: 0px;
+}
+
+/* "X" Close Button */
+.close-button {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  background: none;
+  font-size: 20px;
+  font-weight: bold;
+  color: #00ff00;
+  cursor: pointer;
+  padding: 10px 17px;
+  background: #222;
+}
+
+.close-button:hover {
+  color: black;
+}
+h3 {
+  font-size: 20px;
+}
+h2 {
+    padding-left: 10px;
+}
+.objective-text {
+  font-size: 16px;
+}
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+li {
+  font-size: 18px;
+  padding-bottom: 8px;
+}
+
+@media (max-width: 768px ) {
+
+    .game-board {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+        margin-left: 18px;
+        margin-right: 18px;
+      }
+      
+      /* Tubes as Data Banks */
+      .tube {
+        display: flex;
+        flex-direction: column-reverse; /* Ensures pieces stack from bottom to top */
+        align-items: center;
+        width: 40px;
+        border: 2px solid #00ff00;
+        background: rgba(0, 255, 0, 0.1);
+        box-shadow: 0px 0px 10px #00ff00;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: border-color 0.3s;
+        padding: 2px;
+        padding-top: 10px;
+        min-height: 152px;
+      }
+      
+      .tube.selected {
+        border: 2px solid #60ffef;
+        box-shadow: 0px 0px 15px #00ffbb;
+      }
+      
+      /* Pieces as Data Packets */
+      .piece {
+        width: 30px;
+        height: 30px;
+        margin: 4px 0;
+        border-radius: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: transform 0.1s;
+      }
+
+      .level-header {
+        display: flex;
+        justify-content: center;
+        font-size: 12px;
+      }
+
+}
+@media (max-width: 499px ) {
+
+    h1 {
+        font-size: 30px;
+       margin-bottom: 40px; 
+    }
+    .game-board {
+        display: flex;
+        justify-content: center;
+        gap: 22px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+        margin-left: 18px;
+        margin-right: 18px;
+      }
+      
+      /* Tubes as Data Banks */
+      .tube {
+        display: flex;
+        flex-direction: column-reverse; /* Ensures pieces stack from bottom to top */
+        align-items: center;
+        width: 24px;
+        border: 2px solid #00ff00;
+        background: rgba(0, 255, 0, 0.1);
+        box-shadow: 0px 0px 10px #00ff00;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: border-color 0.3s;
+        padding: 2px;
+        padding-top: 10px;
+        min-height: 92px;
+        margin-bottom: 20px;
+      }
+      
+      .tube.selected {
+        border: 2px solid #60ffef;
+        box-shadow: 0px 0px 15px #00ffbb;
+      }
+      
+      /* Pieces as Data Packets */
+      .piece {
+        width: 17px;
+        height: 16px;
+        margin: 4px 0;
+        border-radius: 3px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: transform 0.1s;
+      }
+      .modal {
+        background: #222;
+        padding: 20px;
+        border-radius: 8px;
+        width: 60vw;
+        text-align: center;
+        box-shadow: 0 0 10px #00ff00;
+      }
+      .win-message {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+      }
+      
+      .win-message.flicker p {
+        animation: flicker-in 0.7s;
+      }
+      
+      .win-message p {
+        font-size: 30px;
+        min-height: 45px;
+      }
+      
+      /* "?" Button */
+      .info-button {
+        position: absolute;
+        top: 0;
+        right: 0;
+        background: none;
+        border: none;
+        font-size: 20px;
+        font-weight: bold;
+        color: #00ff00;
+        cursor: pointer;
+        padding: 10px 17px;
+      }
+      
+      .info-button:hover {
+        background-color: #00ff00;
+      }
+      
+      /* Modal Overlay */
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      
+      /* Modal Window */
+      .modal {
+        background: #222;
+        padding: 20px;
+        border-radius: 8px;
+        width: 80vw;
+        text-align: center;
+        box-shadow: 0 0 10px #00ff00;
+      }
+      
+      /* Modal Header */
+      .modal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        text-align: center;
+        margin-bottom: 0px;
+        padding: 0px;
+      }
+      
+      .modal-header-text {
+        padding: 0px;
+        margin: 0px;
+        font-size: 30px;
+      }
+      
+      /* "X" Close Button */
+      .close-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: none;
+        font-size: 20px;
+        font-weight: bold;
+        color: #00ff00;
+        cursor: pointer;
+        padding: 10px 17px;
+        background: #222;
+      }
+      
+      .close-button:hover {
+        color: red;
+      }
+      h3 {
+        font-size: 20px;
+      }
+      h2 {
+          font-size: 20px;
+      }
+      .objective-text {
+        font-size: 16px;
+      }
+      ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+      }
+      li {
+        font-size: 16px;
+        padding-bottom: 8px;
+      }
+      .win-message p {
+        font-size: 22px;
+        min-height: 30px;
+      }
 }
