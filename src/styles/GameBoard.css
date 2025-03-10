@@ -508,8 +508,8 @@ li {
       /* "?" Button */
       .info-button {
         position: fixed;
-        top: 0;
-        right: 0;
+        top: -10px;
+        right: -10px;
         background: none;
         border: none;
         font-size: 20px;
