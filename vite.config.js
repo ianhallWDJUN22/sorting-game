@@ -5,5 +5,5 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   base: "/sorting-game/",
   plugins: [react()],
-
-})
+  assetsInclude: ['**/*.wav']
+});

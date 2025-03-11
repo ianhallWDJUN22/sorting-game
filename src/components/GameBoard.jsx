@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { generatePuzzle } from "../utils/gameLogic";
 import "../styles/GameBoard.css";
+import SoundManager from "./SoundManager";
 
 const GameBoard = () => {
   // State variables to manage game state
@@ -14,12 +15,34 @@ const GameBoard = () => {
   const [level, setLevel] = useState(1);
   const [showInstructions, setShowInstructions] = useState(false);
   const [closingModal, setClosingModal] = useState(false);
+  const [playBoardLoad, setPlayBoardLoad] = useState(false);
+  const [playReset, setPlayReset] = useState(false);
+  const [animateReset, setAnimateReset] = useState(false);
+
   
   
   // Effect to initialize the first puzzle on component mount
   useEffect(() => {
     startNewPuzzle();
   }, [level]);
+
+  useEffect(() => {
+    const audioBG = "/sorting-game/audio/ambientBackground.wav";
+    const bgAudio = new Audio(audioBG);
+    bgAudio.loop = true;
+    bgAudio.volume = 0.08;
+
+    const enableAudio = () => {
+        bgAudio.play().catch((error) => console.log("Autoplay prevented:", error));
+    };
+    document.addEventListener("click", enableAudio, { once: true });
+    return () => {
+        document.removeEventListener("click", enableAudio);
+        bgAudio.pause();
+        bgAudio.currentTime = 0;
+    };
+}, []);
+
 
     // Function to determine difficulty label based on level
     const getDifficultyLabel = (level) => {
@@ -32,7 +55,9 @@ const GameBoard = () => {
 
   // Function to generate a new puzzle and reset game state
   const startNewPuzzle = () => {
-    setTubes([]); // Clear tubes temporarily for animation reset
+    setTubes([]); // Temporarily clear tubes
+    setAnimateReset(true); // Trigger flicker-in animation when new tubes load
+  
     setTimeout(() => {
       const { tubes: initialTubesState } = generatePuzzle(level);
       setTubes(initialTubesState);
@@ -42,13 +67,23 @@ const GameBoard = () => {
       setHighlightedPieces([]);
       setRecentlyMoved([]);
       setIsSolved(false);
-    }, .01); // Small delay to trigger re-animation
+      
+      setTimeout(() => {
+        setAnimateReset(false); // Reset animation state after it plays
+      }, 300); // Slight delay to ensure animation applies
+    }, 10);
   };
 
   // Function to progress to the next level and generate a new puzzle
   const handleNextLevel = () => {
-    setLevel(prevLevel => prevLevel + 1);
+    setPlayBoardLoad(true);
+  
+    setTimeout(() => {
+      setLevel(prevLevel => prevLevel + 1);
+      setPlayBoardLoad(false);
+    }, 10);
   };
+  
 
     // Function to toggle instructions modal
     const toggleInstructions = () => {
@@ -147,13 +182,26 @@ const GameBoard = () => {
 
   // Resets the current puzzle to its initial state
   const handleReset = () => {
-    setTubes(initialTubes.map(tube => [...tube]));
-    setMoveHistory([]);
-    setSelectedTube(null);
-    setHighlightedPieces([]);
-    setRecentlyMoved([]);
-    setIsSolved(false);
+    setPlayReset(true);
+    setTimeout(() => {
+      setAnimateReset(true); // Trigger flicker-in animation for board reset
+      setPlayBoardLoad(true);
+  
+      setTimeout(() => {
+        setTubes(initialTubes.map(tube => [...tube]));
+        setMoveHistory([]);
+        setSelectedTube(null);
+        setHighlightedPieces([]);
+        setRecentlyMoved([]);
+        setIsSolved(false);
+        setAnimateReset(false); // Reset animation after playing
+        setPlayReset(false); 
+        setPlayBoardLoad(false);
+      }, 350);
+    }, 340);
   };
+  
+  
 
   // Checks if the puzzle has been successfully solved
   const checkWinCondition = (currentTubes) => {
@@ -165,6 +213,7 @@ const GameBoard = () => {
 
   return (
     <div>
+      <SoundManager playBoardLoad={playBoardLoad} playReset={playReset} />
       <div className="instructions-container">
         <button className="info-button" onClick={toggleInstructions}>?</button>
       </div>
@@ -203,23 +252,24 @@ const GameBoard = () => {
       <h2>Level {level} - <span className="difficulty-label">{getDifficultyLabel(level)}</span></h2>
       </div>
       <div className="game-board">
-        {tubes.map((tube, index) => (
-          <div 
-            key={index} 
-            className={`tube flicker-in-tubes ${selectedTube === index ? "selected" : ""}`} 
-            onClick={() => handleTubeClick(index)}
-          >
-            {tube.map((piece, i) => (
-              <div 
-                key={i} 
-                className={`piece ${piece} 
-                    ${selectedTube === index && highlightedPieces.includes(i) ? "highlighted " : ""} 
-                    ${recentlyMoved.some(p => p.tube === index && p.position === i) ? "flicker" : ""}`}
-              ></div>
-            ))}
-          </div>
-        ))}
-      </div>
+  {tubes.map((tube, index) => (
+    <div 
+      key={index} 
+      className={`tube ${animateReset ? "flicker-in-tubes" : ""} ${selectedTube === index ? "selected" : ""}`}
+      onClick={() => handleTubeClick(index)}
+    >
+      {tube.map((piece, i) => (
+        <div 
+          key={i} 
+          className={`piece ${piece} 
+              ${selectedTube === index && highlightedPieces.includes(i) ? "highlighted " : ""} 
+              ${recentlyMoved.some(p => p.tube === index && p.position === i) ? "flicker" : ""}`}
+        ></div>
+      ))}
+    </div>
+  ))}
+</div>
+
       <div className="bottom-buttons">
        {!isSolved && ( <div className="controls">
           <button onClick={handleUndo} disabled={moveHistory.length === 0 || isSolved}>Undo</button>
