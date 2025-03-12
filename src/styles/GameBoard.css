@@ -8,21 +8,21 @@ body {
   font-family: "VT323", monospace;
 }
 body::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 125%;
-    background: repeating-linear-gradient(
-      rgba(0, 37, 0, 0.1) 0px,
-      rgba(0, 183, 0, 0.1) 1px,
-      transparent 2px,
-      transparent 4px
-    );
-    pointer-events: none;
-    z-index: 10;
-  }
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 125%;
+  background: repeating-linear-gradient(
+    rgba(0, 37, 0, 0.1) 0px,
+    rgba(0, 183, 0, 0.1) 1px,
+    transparent 2px,
+    transparent 4px
+  );
+  pointer-events: none;
+  z-index: 10;
+}
 
 /* Game Board */
 .game-board {
@@ -87,7 +87,6 @@ body::before {
 .piece.Color3 {
   background-color: rgb(169, 108, 254);
   box-shadow: 0 0 5px rgb(189, 145, 255);
-  
 } /* Teal Green */
 .piece.Color4 {
   background-color: #e8d123;
@@ -118,7 +117,6 @@ body::before {
   box-shadow: 0 0 5px #ff0055;
 } /* Crimson Red */
 
-
 @keyframes flicker-in {
   0% {
     opacity: 0;
@@ -135,7 +133,7 @@ body::before {
     opacity: 1;
   }
   80% {
-    opacity: .5;
+    opacity: 0.5;
   }
   100% {
     opacity: 1;
@@ -143,7 +141,7 @@ body::before {
 }
 
 .flicker {
-  animation: flicker-in .11s ease-in;
+  animation: flicker-in 0.11s ease-in;
 }
 
 @keyframes flicker-in-highlight {
@@ -173,8 +171,8 @@ body::before {
 /* .piece { image-rendering: pixelated; } */
 
 .level-header {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 
 .controls {
@@ -203,22 +201,55 @@ button:hover {
 }
 
 @keyframes flicker-in-tubes {
-    0% { opacity: 0; transform: translateX(0px); }
-    10% { opacity: 1; transform: translateX(0px); }
-    20% { opacity: 0.7; transform: translateX(0px); }
-    30% { opacity: 1; transform: translateX(1px); }
-    40% { opacity: 0.85; transform: translateX(0px); }
-    50% { opacity: 1; transform: translateX(1px); }
-    60% { opacity: 0.9; transform: translateX(0px); }
-    70% { opacity: 1; transform: translateX(1px); }
-    80% { opacity: .9; transform: translateX(0px); }
-    90% { opacity: 1; transform: translateX(0px); }
-    100% { opacity: 1; transform: scale(1); }
+  0% {
+    opacity: 0;
+    transform: translateX(0px);
+  }
+  10% {
+    opacity: 1;
+    transform: translateX(0px);
+  }
+  20% {
+    opacity: 0.7;
+    transform: translateX(0px);
+  }
+  30% {
+    opacity: 1;
+    transform: translateX(1px);
+  }
+  40% {
+    opacity: 0.85;
+    transform: translateX(0px);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(1px);
+  }
+  60% {
+    opacity: 0.9;
+    transform: translateX(0px);
+  }
+  70% {
+    opacity: 1;
+    transform: translateX(1px);
+  }
+  80% {
+    opacity: 0.9;
+    transform: translateX(0px);
+  }
+  90% {
+    opacity: 1;
+    transform: translateX(0px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 /* Apply this animation when tubes first appear */
 .flicker-in-tubes {
-    animation: flicker-in-tubes 0.5s ease-in-out;
+  animation: flicker-in-tubes 0.5s ease-in-out;
 }
 
 @keyframes flicker-in-modal {
@@ -236,41 +267,89 @@ button:hover {
 }
 
 @keyframes flicker-out-modal {
-    0% { opacity: 1; transform: scale(1); }
-    20% { opacity: 0.8; }
-    40% { opacity: 1; transform: scale(1.02); }
-    60% { opacity: 0.9; }
-    80% { opacity: 0; transform: scale(0.95); }
-    100% { opacity: 0; }
+  0% {
+    opacity: 1;
+    transform: scale(1);
   }
+  20% {
+    opacity: 0.8;
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1.02);
+  }
+  60% {
+    opacity: 0.9;
+  }
+  80% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 0;
+  }
+}
 
 .flicker-in-modal {
   animation: flicker-modal-content 0.4s ease-in-out;
 }
 
 .flicker-out-modal {
-  animation: flicker-out-modal .35s ease-in-out;
+  animation: flicker-out-modal 0.35s ease-in-out;
 }
 
 @keyframes flicker-modal-content {
-    0% { opacity: .7; transform: translateX(0px); }
-    10% { opacity: 1; transform: translateX(2px); }
-    20% { opacity: 0.8; transform: translateX(0px); }
-    30% { opacity: 1; transform: translateX(1px) }
-    40% { opacity: 1; transform: translateX(0px); }
-    50% { opacity: 1; transform: translateX(2px) }
-    60% { opacity: 1; transform: translateX(0px); }
-    70% { opacity: 1; transform: translateX(1px); }
-    80% { opacity: 1; transform: translateX(0px); }
-    90% { opacity: 1; transform: translateX(0px); }
-    100% { opacity: 1; transform: scale(1); }
+  0% {
+    opacity: 0.7;
+    transform: translateX(0px);
+  }
+  10% {
+    opacity: 1;
+    transform: translateX(2px);
+  }
+  20% {
+    opacity: 0.8;
+    transform: translateX(0px);
+  }
+  30% {
+    opacity: 1;
+    transform: translateX(1px);
+  }
+  40% {
+    opacity: 1;
+    transform: translateX(0px);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(2px);
+  }
+  60% {
+    opacity: 1;
+    transform: translateX(0px);
+  }
+  70% {
+    opacity: 1;
+    transform: translateX(1px);
+  }
+  80% {
+    opacity: 1;
+    transform: translateX(0px);
+  }
+  90% {
+    opacity: 1;
+    transform: translateX(0px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .flicker-modal-content {
-    animation: flicker-modal-content 0.3;
+  animation: flicker-modal-content 0.3;
 }
 .modal-content {
-    animation: flicker-modal-content 0.4s ease-in-out;
+  animation: flicker-modal-content 0.4s ease-in-out;
 }
 
 .win-message {
@@ -286,6 +365,98 @@ button:hover {
 .win-message p {
   font-size: 30px;
   min-height: 45px;
+}
+
+  /* Settings Button - Fixed in upper-left */
+  .settings-button {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    font-weight: bold;
+    color: #00ff00;
+    cursor: pointer;
+    padding: 8px 13px;
+  }
+
+  .settings-button:hover {
+    background-color: #00ff00;
+  }
+
+  /* Modal Styles (Reuse from Info Modal) */
+  .modal-settings-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+  }
+
+  .modal-settings {
+  background: #222;
+  padding: 20px;
+  border-radius: 8px;
+  width: 525px;
+  text-align: center;
+  box-shadow: 0 0 10px #00ff00;
+  padding-bottom: 40px;
+  }
+
+  /* Mute Toggle Container */
+.mute-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: #00ff00;
+  cursor: pointer;
+  font-weight: bold;
+  
+}
+
+/* Hide Default Checkbox */
+.mute-toggle input[type="checkbox"] {
+  appearance: none;
+  font-family: "VT323", monospace;
+  text-align: center;
+  width: 25px;
+  height: 25px;
+  border: 2px solid #00ff00;
+  background: #222;
+  border-radius: 5px;
+  cursor: pointer;
+  position: relative;
+  margin-right: 10px;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Checked State */
+.mute-toggle input[type="checkbox"]:checked {
+  background-color: #00ff00ab;
+  border-color: #00ff00;
+}
+
+/* Add Custom Checkmark */
+.mute-toggle input[type="checkbox"]::before {
+  content: "X";
+  font-size: 22px;
+  font-weight: bolder;
+  color: #222;
+  position: absolute;
+  left: 30%;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+/* Show Checkmark When Checked */
+.mute-toggle input[type="checkbox"]:checked::before {
+  opacity: 1;
 }
 
 /* "?" Button */
@@ -316,6 +487,7 @@ button:hover {
   display: flex;
   justify-content: center;
   align-items: center;
+  
 }
 
 /* Modal Window */
@@ -326,16 +498,17 @@ button:hover {
   width: 525px;
   text-align: center;
   box-shadow: 0 0 10px #00ff00;
+  padding-bottom: 20px;
 }
 
 /* Modal Header */
 .modal-header {
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: center;
   text-align: center;
   font-size: 25px;
-  margin-bottom: 0px;
+  margin-top: -70px;
   padding: 0px;
 }
 
@@ -346,9 +519,9 @@ button:hover {
 
 /* "X" Close Button */
 .close-button {
-  position:relative;
+  position: relative;
   top: -35px;
-  right: -45%;
+  right: -47%;
   background: none;
   font-size: 20px;
   font-weight: bold;
@@ -362,10 +535,11 @@ button:hover {
   color: black;
 }
 h3 {
-  font-size: 20px;
+  font-size: 25px;
+  margin-top: 40px;
 }
 h2 {
-    padding-left: 10px;
+  padding-left: 10px;
 }
 .objective-text {
   font-size: 16px;
@@ -380,230 +554,259 @@ li {
   padding-bottom: 8px;
 }
 
-@media (max-width: 768px ) {
+@media (max-width: 768px) {
+  .game-board {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+    margin-left: 18px;
+    margin-right: 18px;
+  }
 
-    .game-board {
-        display: flex;
-        justify-content: center;
-        gap: 30px;
-        margin-top: 20px;
-        flex-wrap: wrap;
-        margin-left: 18px;
-        margin-right: 18px;
-      }
-      
-      /* Tubes as Data Banks */
-      .tube {
-        display: flex;
-        flex-direction: column-reverse; /* Ensures pieces stack from bottom to top */
-        align-items: center;
-        width: 40px;
-        border: 2px solid #00ff00;
-        background: rgba(0, 255, 0, 0.1);
-        box-shadow: 0px 0px 10px #00ff00;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: border-color 0.3s;
-        padding: 2px;
-        padding-top: 10px;
-        min-height: 152px;
-      }
-      
-      .tube.selected {
-        border: 2px solid #60ffef;
-        box-shadow: 0px 0px 15px #00ffbb;
-      }
-      
-      /* Pieces as Data Packets */
-      .piece {
-        width: 30px;
-        height: 30px;
-        margin: 4px 0;
-        border-radius: 5px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        transition: transform 0.1s;
-      }
+  /* Tubes as Data Banks */
+  .tube {
+    display: flex;
+    flex-direction: column-reverse; /* Ensures pieces stack from bottom to top */
+    align-items: center;
+    width: 40px;
+    border: 2px solid #00ff00;
+    background: rgba(0, 255, 0, 0.1);
+    box-shadow: 0px 0px 10px #00ff00;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: border-color 0.3s;
+    padding: 2px;
+    padding-top: 10px;
+    min-height: 152px;
+  }
 
-      .level-header {
-        display: flex;
-        justify-content: center;
-        font-size: 12px;
-      }
+  .tube.selected {
+    border: 2px solid #60ffef;
+    box-shadow: 0px 0px 15px #00ffbb;
+  }
 
+  /* Pieces as Data Packets */
+  .piece {
+    width: 30px;
+    height: 30px;
+    margin: 4px 0;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.1s;
+  }
+
+  .level-header {
+    display: flex;
+    justify-content: center;
+    font-size: 12px;
+  }
 }
-@media (max-width: 499px ) {
+@media (max-width: 499px) {
+  h1 {
+    font-size: 30px;
+    margin-bottom: 40px;
+  }
+  .game-board {
+    display: flex;
+    justify-content: center;
+    gap: 22px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+    margin-left: 18px;
+    margin-right: 18px;
+  }
 
-    h1 {
-        font-size: 30px;
-        margin-bottom: 40px; 
-    }
-    .game-board {
-        display: flex;
-        justify-content: center;
-        gap: 22px;
-        margin-top: 20px;
-        flex-wrap: wrap;
-        margin-left: 18px;
-        margin-right: 18px;
-      }
-      
-      /* Tubes as Data Banks */
-      .tube {
-        display: flex;
-        flex-direction: column-reverse; /* Ensures pieces stack from bottom to top */
-        align-items: center;
-        width: 24px;
-        border: 2px solid #00ff00;
-        background: rgba(0, 255, 0, 0.1);
-        box-shadow: 0px 0px 10px #00ff00;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: border-color 0.3s;
-        padding: 2px;
-        padding-top: 10px;
-        min-height: 96px;
-        margin-bottom: 20px;
-      }
-      
-      .tube.selected {
-        border: 2px solid #60ffef;
-        box-shadow: 0px 0px 15px #00ffbb;
-      }
-      
-      /* Pieces as Data Packets */
-      .piece {
-        width: 17px;
-        height: 16px;
-        margin: 4px 0;
-        border-radius: 3px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        transition: transform 0.1s;
-      }
-      .modal {
-        background: #222;
-        padding: 20px;
-        border-radius: 8px;
-        width: 60vw;
-        text-align: center;
-        box-shadow: 0 0 10px #00ff00;
-      }
-      .win-message {
-        display: flex;
-        align-items: center;
-        flex-direction: column;
-      }
-      
-      .win-message.flicker p {
-        animation: flicker-in 0.7s;
-      }
-      
-      .win-message p {
-        font-size: 30px;
-        min-height: 45px;
-      }
-      
-      /* "?" Button */
-      .info-button {
-        position: fixed;
-        top: -10px;
-        right: -10px;
-        background: none;
-        border: none;
-        font-size: 20px;
-        font-weight: bold;
-        color: #00ff00;
-        cursor: pointer;
-        padding: 10px 17px;
-      }
-      
-      .info-button:hover {
-        background-color: #00ff00;
-      }
-      
-      /* Modal Overlay */
-      .modal-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.6);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-      
-      /* Modal Window */
-      .modal {
-        background: #222;
-        padding: 20px;
-        border-radius: 8px;
-        width: 80vw;
-        text-align: center;
-        box-shadow: 0 0 10px #00ff00;
-      }
-      
-      /* Modal Header */
-      .modal-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-around;
-        text-align: center;
-        margin-bottom: 0px;
-        padding: 0px;
-      }
-      
-      .modal-header-text {
-        padding: 0px;
-        margin: 0px;
-        font-size: 30px;
-      }
-      
-      /* "X" Close Button */
-      .close-button {
-        position:relative;
-        top: -35px;
-        right: -45%;
-        background: none;
-        font-size: 20px;
-        font-weight: bold;
-        color: #00ff00;
-        cursor: pointer;
-        padding: 10px 17px;
-        background: #222;
-      }
-      
-      .close-button:hover {
-        color: red;
-      }
-      h1 {
-        margin-top: 0px;
-      }
+  /* Tubes as Data Banks */
+  .tube {
+    display: flex;
+    flex-direction: column-reverse; /* Ensures pieces stack from bottom to top */
+    align-items: center;
+    width: 24px;
+    border: 2px solid #00ff00;
+    background: rgba(0, 255, 0, 0.1);
+    box-shadow: 0px 0px 10px #00ff00;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: border-color 0.3s;
+    padding: 2px;
+    padding-top: 10px;
+    min-height: 96px;
+    margin-bottom: 20px;
+  }
 
-      h3 {
-        font-size: 20px;
-      }
-      h2 {
-          font-size: 20px;
-      }
-      .objective-text {
-        font-size: 17px;
-      }
-      ul {
-        list-style-type: none;
-        padding: 0;
-        margin: 0;
-      }
-      li {
-        font-size: 17px;
-        padding-bottom: 8px;
-      }
-      .win-message p {
-        font-size: 22px;
-        min-height: 30px;
-      }
+  .tube.selected {
+    border: 2px solid #60ffef;
+    box-shadow: 0px 0px 15px #00ffbb;
+  }
+
+  /* Pieces as Data Packets */
+  .piece {
+    width: 17px;
+    height: 16px;
+    margin: 4px 0;
+    border-radius: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.1s;
+  }
+ 
+  .win-message {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .win-message.flicker p {
+    animation: flicker-in 0.7s;
+  }
+
+  .win-message p {
+    font-size: 30px;
+    min-height: 45px;
+  }
+
+  .modal {
+    background: #222;
+    padding: 20px;
+    border-radius: 8px;
+    width: 60vw;
+    text-align: center;
+    box-shadow: 0 0 10px #00ff00;
+  }
+  .modal-settings {
+    background: #222;
+    padding: 20px;
+    border-radius: 8px;
+    width: 500px;
+    text-align: center;
+    box-shadow: 0 0 10px #00ff00;
+  }
+
+  /* "?" Button */
+  .info-button {
+    position: fixed;
+    top: -10px;
+    right: -10px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    font-weight: bold;
+    color: #00ff00;
+    cursor: pointer;
+    padding: 10px 17px;
+  }
+
+  .info-button:hover {
+    background-color: #00ff00;
+  }
+
+  /* Modal Overlay */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* Modal Window */
+  .modal {
+    background: #222;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80vw;
+    text-align: center;
+    box-shadow: 0 0 10px #00ff00;
+  }
+
+  .modal-overlay-settings {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* Modal Window */
+  .modal-settings {
+    background: #222;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80vw;
+    text-align: center;
+    box-shadow: 0 0 10px #00ff00;
+  }
+
+  /* Modal Header */
+  .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    text-align: center;
+    margin-bottom: 0px;
+    padding: 0px;
+  }
+
+  .modal-header-text {
+    padding: 0px;
+    margin: 0px;
+    font-size: 30px;
+  }
+
+  /* "X" Close Button */
+  .close-button {
+    position: relative;
+    top: -35px;
+    right: -45%;
+    background: none;
+    font-size: 20px;
+    font-weight: bold;
+    color: #00ff00;
+    cursor: pointer;
+    padding: 10px 17px;
+    background: #222;
+  }
+
+  .close-button:hover {
+    color: red;
+  }
+  h1 {
+    margin-top: 0px;
+  }
+
+  h3 {
+    font-size: 20px;
+  }
+  h2 {
+    font-size: 20px;
+  }
+  .objective-text {
+    font-size: 17px;
+  }
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  li {
+    font-size: 17px;
+    padding-bottom: 8px;
+  }
+  .win-message p {
+    font-size: 22px;
+    min-height: 30px;
+  }
 }

@@ -15,12 +15,16 @@ const GameBoard = () => {
   const [level, setLevel] = useState(1);
   const [showInstructions, setShowInstructions] = useState(false);
   const [closingModal, setClosingModal] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
+  const [closingSettings, setClosingSettings] = useState(false);
   //animation states
   const [animateReset, setAnimateReset] = useState(false);
   //audio states
   const [playNextLevel, setPlayNextLevel] = useState(false);
   const [playLevelClear, setPlayLevelClear] = useState(false);
   const [playReset, setPlayReset] = useState(false);
+  const [muted, setMuted] = useState(false); // New state for mute functionality
+  const bgMusicRef = useRef(null); // Reference for bgMusic
 
   
   
@@ -32,23 +36,32 @@ const GameBoard = () => {
 
   // Set background music
   useEffect(() => {
-    const bgMusic = new Audio("/sorting-game/audio/bgMusic.wav"); // Ensure correct path
-    bgMusic.loop = true;
-    bgMusic.volume = 0.05; // Adjust volume as needed
+    bgMusicRef.current = new Audio("/sorting-game/audio/bgMusic.wav"); 
+    bgMusicRef.current.loop = true;
+    bgMusicRef.current.volume = muted ? 0 : 0.05; // Adjust volume based on mute state
 
     const enableAudio = () => {
-        bgMusic.play().catch(error => console.log("Autoplay prevented:", error));
+      if (!muted) {
+        bgMusicRef.current.play().catch(error => console.log("Autoplay prevented:", error));
+      }
     };
 
     document.addEventListener("click", enableAudio, { once: true });
 
     return () => {
-        document.removeEventListener("click", enableAudio);
-        bgMusic.pause();
-        bgMusic.currentTime = 0;
+      document.removeEventListener("click", enableAudio);
+      bgMusicRef.current.pause();
+      bgMusicRef.current.currentTime = 0;
     };
-}, []);
+  }, [muted]); // Update when muted state changes
 
+  // Function to toggle mute
+  const toggleMute = () => {
+    setMuted(prev => !prev);
+    if (bgMusicRef.current) {
+      bgMusicRef.current.volume = muted ? 0.05 : 0; // Toggle between muted and unmuted
+    }
+  };
 
 
     // Function to determine difficulty label based on level
@@ -103,6 +116,19 @@ const GameBoard = () => {
           setShowInstructions(true); // Show modal with flicker-in animation
         }
       };
+
+        // Function to toggle settings modal
+  const toggleSettings = () => {
+    if (showSettings) {
+      setClosingSettings(true); // Start flicker-out animation
+      setTimeout(() => {
+        setShowSettings(false); // Hide modal after animation
+        setClosingSettings(false);
+      }, 300); // Matches flicker-out animation duration
+    } else {
+      setShowSettings(true); // Show modal with flicker-in animation
+    }
+  };
 
   // Handles user interaction when clicking on a tube
   const handleTubeClick = (index) => {
@@ -201,7 +227,7 @@ const GameBoard = () => {
         setAnimateReset(false); // Reset animation after playing
         setPlayReset(false); 
       }, 200);
-    }, 100);
+    }, 10);
   };
   
   
@@ -226,6 +252,28 @@ const GameBoard = () => {
   return (
     <div>
       <SoundManager playNextLevel={playNextLevel} playLevelClear={playLevelClear} playReset={playReset}/>
+      {/* Settings Button */}
+      <div className="instructions-container">
+      <button className="settings-button" onClick={toggleSettings}>⚙️</button>
+      </div>
+      {/* Settings Modal */}
+      {showSettings && (
+        <div className={`modal-settings-overlay ${closingSettings ? "flicker-out-modal" : "flicker-in-modal"}`}>
+          <div className="modal-settings">
+            <button className="close-button" onClick={toggleSettings}>X</button>
+            <div className="modal-header">
+              <h2 className="modal-header-text">Settings</h2>
+            </div>
+            <div className="modal-content">
+            <h3>Audio:</h3>
+            <label className="mute-toggle">
+                <input type="checkbox" checked={muted} onChange={toggleMute} />
+                Mute Background Music
+              </label>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="instructions-container">
         <button className="info-button" onClick={toggleInstructions}>?</button>
       </div>
