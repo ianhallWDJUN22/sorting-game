@@ -218,7 +218,7 @@ const GameBoard = () => {
   
       setTimeout(() => {
         setPlayLevelClear(false); // Reset state to allow future plays
-      }, 1000); // Adjust timing based on sound duration
+      }, 200); // Adjust timing based on sound duration
     }
   };
   
