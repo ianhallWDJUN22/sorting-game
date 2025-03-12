@@ -26,23 +26,6 @@ const GameBoard = () => {
     startNewPuzzle();
   }, [level]);
 
-  useEffect(() => {
-    const audioBG = "/sorting-game/audio/ambientBackground.wav";
-    const bgAudio = new Audio(audioBG);
-    bgAudio.loop = true;
-    bgAudio.volume = 0.08;
-
-    const enableAudio = () => {
-        bgAudio.play().catch((error) => console.log("Autoplay prevented:", error));
-    };
-    document.addEventListener("click", enableAudio, { once: true });
-    return () => {
-        document.removeEventListener("click", enableAudio);
-        bgAudio.pause();
-        bgAudio.currentTime = 0;
-    };
-}, []);
-
 
     // Function to determine difficulty label based on level
     const getDifficultyLabel = (level) => {

@@ -6,10 +6,10 @@ const SoundManager = ({ playBoardLoad, playReset }) => {
 
   useEffect(() => {
     boardLoadAudioRef.current = new Audio("/sorting-game/audio/buzzFlicker.wav");
-    boardLoadAudioRef.current.volume = 0.05;
+    boardLoadAudioRef.current.volume = 0.005;
 
     resetAudioRef.current = new Audio("/sorting-game/audio/resetBoard.wav");
-    resetAudioRef.current.volume = 0.25; // Adjust volume if needed
+    resetAudioRef.current.volume = 0.0; // Adjust volume if needed
   }, []);
 
   useEffect(() => {
