@@ -24,6 +24,25 @@ const GameBoard = () => {
     startNewPuzzle();
   }, [level]);
 
+  useEffect(() => {
+    const bgMusic = new Audio("/sorting-game/audio/bgMusic.wav"); // Ensure correct path
+    bgMusic.loop = true;
+    bgMusic.volume = 0.05; // Adjust volume as needed
+
+    const enableAudio = () => {
+        bgMusic.play().catch(error => console.log("Autoplay prevented:", error));
+    };
+
+    document.addEventListener("click", enableAudio, { once: true });
+
+    return () => {
+        document.removeEventListener("click", enableAudio);
+        bgMusic.pause();
+        bgMusic.currentTime = 0;
+    };
+}, []);
+
+
 
     // Function to determine difficulty label based on level
     const getDifficultyLabel = (level) => {
@@ -173,8 +192,8 @@ const GameBoard = () => {
         setAnimateReset(false); // Reset animation after playing
         setPlayReset(false); 
         setPlayBoardLoad(false);
-      }, 350);
-    }, 340);
+      }, 200);
+    }, 100);
   };
   
   
