@@ -85,11 +85,12 @@ body::before {
   box-shadow: 0 0 5px #0055ff;
 } /* Vivid Blue */
 .piece.Color3 {
-  background-color: rgb(155, 122, 255);
-  box-shadow: 0 0 5px rgb(144, 107, 255);
+  background-color: rgb(169, 108, 254);
+  box-shadow: 0 0 5px rgb(189, 145, 255);
+  
 } /* Teal Green */
 .piece.Color4 {
-  background-color: #eadf0b;
+  background-color: #e8d123;
   box-shadow: 0 0 5px #e6b800;
 } /* Mustard Yellow */
 .piece.Color5 {
@@ -101,19 +102,19 @@ body::before {
   box-shadow: 0 0 5px #00e6e6;
 } /* Neon Cyan */
 .piece.Color7 {
-  background-color: #ff8800;
-  box-shadow: 0 0 5px #ff8800;
+  background-color: rgb(3, 137, 74);
+  box-shadow: 0 0 5px rgb(6, 132, 59);
 } /* Bright Amber */
 .piece.Color8 {
-  background-color: rgb(2, 180, 112);
-  box-shadow: 0 0 5px rgb(1, 205, 1);
+  background-color: #ff8800;
+  box-shadow: 0 0 5px #ff8800;
 } /* Hot Pink */
 .piece.Color9 {
-  background-color: #7cff4d;
+  background-color: #55eb3e;
   box-shadow: 0 0 5px #29ff00;
 } /* Digital Green */
 .piece.Color10 {
-  background-color: #da3bcd;
+  background-color: #d420c5;
   box-shadow: 0 0 5px #ff0055;
 } /* Crimson Red */
 

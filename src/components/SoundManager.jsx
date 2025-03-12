@@ -10,7 +10,7 @@ const SoundManager = ({ playNextLevel, playReset, playLevelClear }) => {
     nextLevelAudioRef.current.volume = 0.05;
 
     resetAudioRef.current = new Audio("/sorting-game/audio/reset2.mp3");
-    resetAudioRef.current.volume = 0.1;
+    resetAudioRef.current.volume = 0.25;
 
     levelClearAudioRef.current = new Audio("/sorting-game/audio/levelClear.wav");
     levelClearAudioRef.current.volume = .4;
