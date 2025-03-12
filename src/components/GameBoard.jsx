@@ -15,7 +15,12 @@ const GameBoard = () => {
   const [level, setLevel] = useState(1);
   const [showInstructions, setShowInstructions] = useState(false);
   const [closingModal, setClosingModal] = useState(false);
+  //animation states
   const [animateReset, setAnimateReset] = useState(false);
+  //audio states
+  const [playNextLevel, setPlayNextLevel] = useState(false);
+  const [playLevelClear, setPlayLevelClear] = useState(false);
+  const [playReset, setPlayReset] = useState(false);
 
   
   
@@ -24,10 +29,12 @@ const GameBoard = () => {
     startNewPuzzle();
   }, [level]);
 
+
+  // Set background music
   useEffect(() => {
     const bgMusic = new Audio("/sorting-game/audio/bgMusic.wav"); // Ensure correct path
     bgMusic.loop = true;
-    bgMusic.volume = 0.05; // Adjust volume as needed
+    bgMusic.volume = 0.025; // Adjust volume as needed
 
     const enableAudio = () => {
         bgMusic.play().catch(error => console.log("Autoplay prevented:", error));
@@ -76,9 +83,10 @@ const GameBoard = () => {
 
   // Function to progress to the next level and generate a new puzzle
   const handleNextLevel = () => {
-  
+    setPlayNextLevel(true); // Trigger next level sound
     setTimeout(() => {
       setLevel(prevLevel => prevLevel + 1);
+      setPlayNextLevel(false); // Reset state after sound plays
     }, 10);
   };
   
@@ -181,7 +189,8 @@ const GameBoard = () => {
   // Resets the current puzzle to its initial state
   const handleReset = () => {
     setTimeout(() => {
-      setAnimateReset(true); // Trigger flicker-in animation for board reset
+      setAnimateReset(true);
+      setPlayReset(true); // Trigger flicker-in animation for board reset
       setTimeout(() => {
         setTubes(initialTubes.map(tube => [...tube]));
         setMoveHistory([]);
@@ -191,8 +200,7 @@ const GameBoard = () => {
         setIsSolved(false);
         setAnimateReset(false); // Reset animation after playing
         setPlayReset(false); 
-        setPlayBoardLoad(false);
-      }, 200);
+      }, 150);
     }, 100);
   };
   
@@ -203,12 +211,21 @@ const GameBoard = () => {
     const allSorted = currentTubes.every(
       tube => tube.length === 0 || (tube.length === 4 && new Set(tube).size === 1)
     );
-    setIsSolved(allSorted);
+  
+    if (allSorted && !isSolved) { // Ensures it only triggers once
+      setIsSolved(true);
+      setPlayLevelClear(true); // Play sound effect
+  
+      setTimeout(() => {
+        setPlayLevelClear(false); // Reset state to allow future plays
+      }, 1000); // Adjust timing based on sound duration
+    }
   };
+  
 
   return (
     <div>
-      <SoundManager />
+      <SoundManager playNextLevel={playNextLevel} playLevelClear={playLevelClear} playReset={playReset}/>
       <div className="instructions-container">
         <button className="info-button" onClick={toggleInstructions}>?</button>
       </div>
