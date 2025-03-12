@@ -15,8 +15,6 @@ const GameBoard = () => {
   const [level, setLevel] = useState(1);
   const [showInstructions, setShowInstructions] = useState(false);
   const [closingModal, setClosingModal] = useState(false);
-  const [playBoardLoad, setPlayBoardLoad] = useState(false);
-  const [playReset, setPlayReset] = useState(false);
   const [animateReset, setAnimateReset] = useState(false);
 
   
@@ -59,11 +57,9 @@ const GameBoard = () => {
 
   // Function to progress to the next level and generate a new puzzle
   const handleNextLevel = () => {
-    setPlayBoardLoad(true);
   
     setTimeout(() => {
       setLevel(prevLevel => prevLevel + 1);
-      setPlayBoardLoad(false);
     }, 10);
   };
   
@@ -165,11 +161,8 @@ const GameBoard = () => {
 
   // Resets the current puzzle to its initial state
   const handleReset = () => {
-    setPlayReset(true);
     setTimeout(() => {
       setAnimateReset(true); // Trigger flicker-in animation for board reset
-      setPlayBoardLoad(true);
-  
       setTimeout(() => {
         setTubes(initialTubes.map(tube => [...tube]));
         setMoveHistory([]);
@@ -196,7 +189,7 @@ const GameBoard = () => {
 
   return (
     <div>
-      <SoundManager playBoardLoad={playBoardLoad} playReset={playReset} />
+      <SoundManager />
       <div className="instructions-container">
         <button className="info-button" onClick={toggleInstructions}>?</button>
       </div>
