@@ -34,7 +34,7 @@ const GameBoard = () => {
   useEffect(() => {
     const bgMusic = new Audio("/sorting-game/audio/bgMusic.wav"); // Ensure correct path
     bgMusic.loop = true;
-    bgMusic.volume = 0.01; // Adjust volume as needed
+    bgMusic.volume = 0.025; // Adjust volume as needed
 
     const enableAudio = () => {
         bgMusic.play().catch(error => console.log("Autoplay prevented:", error));
@@ -200,7 +200,7 @@ const GameBoard = () => {
         setIsSolved(false);
         setAnimateReset(false); // Reset animation after playing
         setPlayReset(false); 
-      }, 150);
+      }, 200);
     }, 100);
   };
   

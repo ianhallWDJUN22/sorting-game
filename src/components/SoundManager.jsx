@@ -13,7 +13,7 @@ const SoundManager = ({ playNextLevel, playReset, playLevelClear }) => {
     resetAudioRef.current.volume = 0.1;
 
     levelClearAudioRef.current = new Audio("/sorting-game/audio/levelClear.wav");
-    levelClearAudioRef.current.volume = 1;
+    levelClearAudioRef.current.volume = .4;
   }, []);
 
   useEffect(() => {
