@@ -1,5 +1,3 @@
-// src/utils/gameLogic.js
-
 // Function to determine the number of colors based on the current level
 const getNumColorsForLevel = (level) => {
     if (level <= 5) return 6;
@@ -10,8 +8,12 @@ const getNumColorsForLevel = (level) => {
 };
 
 // Function to generate a puzzle
-export function generatePuzzle(level, piecesPerTube = 4, emptyTubes = 2) {
-    const numColors = getNumColorsForLevel(level); // Determine number of colors based on level
+export function generatePuzzle(level, randomDifficulty = false, piecesPerTube = 4, emptyTubes = 2) {
+    // Select number of colors
+    const numColors = randomDifficulty 
+        ? [6, 7, 8, 9, 10][Math.floor(Math.random() * 5)] // Random selection from [6-10]
+        : getNumColorsForLevel(level); // Default behavior
+
     let tubes = [];
     let allColors = [];
     let totalTubes = numColors + emptyTubes;
@@ -21,13 +23,13 @@ export function generatePuzzle(level, piecesPerTube = 4, emptyTubes = 2) {
         allColors.push(...new Array(piecesPerTube).fill(color)); // Collect all pieces
     }
     
-    // Step 2: Shuffle all game pieces randomly
+    // Shuffle all game pieces randomly
     for (let i = allColors.length - 1; i > 0; i--) {
         let j = Math.floor(Math.random() * (i + 1));
         [allColors[i], allColors[j]] = [allColors[j], allColors[i]];
     }
     
-    // Step 3: Distribute shuffled pieces into tubes, ensuring no tube is fully sorted
+    // Distribute shuffled pieces into tubes, ensuring no tube is fully sorted
     while (true) {
         let tempTubes = [];
         let tempColors = [...allColors];
@@ -48,7 +50,7 @@ export function generatePuzzle(level, piecesPerTube = 4, emptyTubes = 2) {
         }
     }
     
-    // Step 4: Add empty tubes
+    // Add empty tubes
     for (let i = 0; i < emptyTubes; i++) {
         tubes.push([]);
     }

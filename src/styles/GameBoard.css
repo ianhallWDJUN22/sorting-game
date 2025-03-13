@@ -367,24 +367,40 @@ button:hover {
   min-height: 45px;
 }
 
-  /* Settings Button - Fixed in upper-left */
-  .settings-button {
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    background: none;
-    border: none;
-    font-size: 20px;
-    font-weight: bold;
-    color: #00ff00;
-    cursor: pointer;
-    padding: 8px 13px;
-  }
+  /* Settings Icon */
+.settings-icon {
+  width: 24px; /* Adjust as needed */
+  height: 24px;
+  stroke: #00ff00; /* Matches your game's color theme */
+  transition: transform 0.2s ease-in-out;
+  justify-self: center;
 
-  .settings-button:hover {
-    background-color: #00ff00;
-  }
+}
 
+ /* Settings Button */
+.settings-button {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px 10px;
+  padding-top: 10px;
+
+}
+
+.settings-button:hover .settings-icon {
+  transform: rotate(20deg); /* Adds slight hover effect */
+  background: none;
+}
+
+.settings-button:hover {
+  color: black;
+  box-shadow: 0px 0px 5px #00ff00;
+}
+
+  
   /* Modal Styles (Reuse from Info Modal) */
   .modal-settings-overlay {
     position: fixed;
@@ -397,29 +413,41 @@ button:hover {
     align-items: center;
     
   }
-
-  .modal-settings {
-  background: #222;
-  padding: 20px;
-  border-radius: 8px;
-  width: 525px;
-  text-align: center;
-  box-shadow: 0 0 10px #00ff00;
-  padding-bottom: 40px;
-  }
-
-  /* Mute Toggle Container */
-.mute-toggle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  color: #00ff00;
-  cursor: pointer;
-  font-weight: bold;
   
-}
-
+  .modal-settings {
+    background: #222;
+    padding: 20px;
+    border-radius: 8px;
+    width: 525px;
+    text-align: center;
+    box-shadow: 0 0 10px #00ff00;
+    padding-bottom: 40px;
+  }
+  
+  .toggle-list {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Aligns checkboxes to the left inside */
+    justify-content: center;
+    width: 80%; /* Adjust width as needed */
+    max-width: 200px; /* Prevents it from stretching too far */
+    margin: 0 auto; /* Centers the entire div inside the modal */
+  }
+  
+  .mute-toggle {
+    display: flex;
+    align-items: center; /* Aligns checkbox and label text */
+    text-align: left; /* Ensures text is aligned left */
+    width: 100%; /* Makes each label take full width of .toggle-list */
+    gap: 8px; /* Adds spacing between checkbox and text */
+    font-size: 18px;
+    color: #00ff00;
+    cursor: pointer;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  
 /* Hide Default Checkbox */
 .mute-toggle input[type="checkbox"] {
   appearance: none;
@@ -546,8 +574,9 @@ h2 {
 }
 ul {
   list-style-type: none;
-  padding: 0;
   margin: 0;
+  padding-left: 25px;
+  padding-right: 25px;
 }
 li {
   font-size: 18px;
