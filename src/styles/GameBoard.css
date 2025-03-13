@@ -625,7 +625,7 @@ li {
     display: flex;
     flex-direction: column-reverse; /* Ensures pieces stack from bottom to top */
     align-items: center;
-    width: 24px;
+    width: 25px;
     border: 2px solid #00ff00;
     background: rgba(0, 255, 0, 0.1);
     box-shadow: 0px 0px 10px #00ff00;
@@ -742,7 +742,7 @@ li {
     box-shadow: 0 0 10px #00ff00;
     padding-bottom: 40px;
   }
-  
+
   /* Modal Overlay */
   .modal-overlay {
     position: fixed;

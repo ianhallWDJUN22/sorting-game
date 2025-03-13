@@ -9,11 +9,11 @@ const SoundManager = ({ playNextLevel, playReset, playLevelClear }) => {
     nextLevelAudioRef.current = new Audio("/sorting-game/audio/newBoard.wav");
     nextLevelAudioRef.current.volume = 0.05;
 
-    resetAudioRef.current = new Audio("/sorting-game/audio/reset2.mp3");
+    resetAudioRef.current = new Audio("/sorting-game/audio/reset2.mp3"); // Use `.wav` since that’s your actual file
     resetAudioRef.current.volume = 0.25;
 
     levelClearAudioRef.current = new Audio("/sorting-game/audio/levelClear.wav");
-    levelClearAudioRef.current.volume = .4;
+    levelClearAudioRef.current.volume = 0.4;
   }, []);
 
   useEffect(() => {
@@ -25,7 +25,7 @@ const SoundManager = ({ playNextLevel, playReset, playLevelClear }) => {
 
   useEffect(() => {
     if (playReset) {
-      resetAudioRef.current.currentTime = 0; // Restart sound
+      resetAudioRef.current.currentTime = 0; // Ensure it starts from beginning
       resetAudioRef.current.play();
     }
   }, [playReset]);
@@ -41,6 +41,7 @@ const SoundManager = ({ playNextLevel, playReset, playLevelClear }) => {
 };
 
 export default SoundManager;
+
 
 
 
