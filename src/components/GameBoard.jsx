@@ -18,19 +18,94 @@ const GameBoard = () => {
   const [showSettings, setShowSettings] = useState(false);
   const [closingSettings, setClosingSettings] = useState(false);
   const [randomDifficulty, setRandomDifficulty] = useState(false);
+  const [pendingNewGame, setPendingNewGame] = useState(false);
   //animation states
   const [animateReset, setAnimateReset] = useState(false);
   //audio states
   const [playNextLevel, setPlayNextLevel] = useState(false);
   const [playLevelClear, setPlayLevelClear] = useState(false);
   const [playReset, setPlayReset] = useState(false);
-  const [muted, setMuted] = useState(false); // New state for mute functionality
-  const [muteMusic, setMuteMusic] = useState(true); // Controls background music, default to muted
+  const [muted, setMuted] = useState(false); // Mute functionality
+  const [muteMusic, setMuteMusic] = useState(true); // Controls background music
   const bgMusicRef = useRef(null); // Reference for bgMusic
 
+
+  // Save game state in local storage
+useEffect(() => {
+  if (tubes.length > 0) { // Prevent saving empty state on load
+    const gameState = {
+      tubes,
+      initialTubes,
+      moveHistory,
+      level,
+      isSolved,
+      randomDifficulty, 
+    };
+    localStorage.setItem("gameState", JSON.stringify(gameState));
+  }
+}, [tubes, moveHistory, level, isSolved]);
+
+
+  // Retrieve the saved game
+  useEffect(() => {
+    const savedGame = localStorage.getItem("gameState");
+  
+    if (savedGame) {
+      const { tubes, initialTubes, moveHistory, level, isSolved, randomDifficulty } = JSON.parse(savedGame);
+      setTubes(tubes);
+      setInitialTubes(initialTubes);
+      setMoveHistory(moveHistory);
+      setLevel(level);
+      setIsSolved(isSolved);
+      setRandomDifficulty(randomDifficulty);
+    } else {
+      startNewPuzzle(); // Only start a new puzzle if no saved data exists
+    }
+  }, []);
+  
+
+  // Removes the saved game from local storage and resets everything
+  const clearGameState = () => {
+    localStorage.removeItem("gameState");
+  
+    // Close the settings modal
+    setShowSettings(false);
+  
+    // Reset relevant game states
+    setTubes([]);
+    setInitialTubes([]);
+    setMoveHistory([]);
+    setSelectedTube(null);
+    setHighlightedPieces([]);
+    setRecentlyMoved([]);
+    setIsSolved(false);
+  
+    // Ensure level and randomDifficulty reset before generating a new puzzle
+    setRandomDifficulty(false);
+    setLevel(1);
+  
+    // Set flag to indicate a new game is pending
+    setPendingNewGame(true);
+  };
+  
+  // ✅ Ensure a new game starts AFTER the state update is fully applied
+  useEffect(() => {
+    if (pendingNewGame) {
+      startNewPuzzle(1);
+      setPendingNewGame(false); // Reset flag after starting new game
+    }
+  }, [level, randomDifficulty, pendingNewGame]); 
+  
+  
+
+  
+  
   // Effect to initialize the first puzzle on component mount
   useEffect(() => {
-    startNewPuzzle();
+    const savedGame = localStorage.getItem("gameState");
+    if (!savedGame) { // ✅ Only generate a new puzzle if no saved state exists
+      startNewPuzzle();
+    }
   }, [level]);
 
   const toggleRandomDifficulty = () => {
@@ -45,6 +120,7 @@ const GameBoard = () => {
   const toggleMuteMusic = () => {
     setMuteMusic((prev) => !prev);
   };
+
 
   useEffect(() => {
     bgMusicRef.current = new Audio("/sorting-game/audio/bgMusic.wav");
@@ -64,7 +140,6 @@ const GameBoard = () => {
   }, [muteMusic]);
 
   // Function to determine difficulty label based on level
-  // Function to determine difficulty label based on level
   const getDifficultyLabel = (level, randomDifficulty) => {
     if (randomDifficulty) return "???"; // Return "???" if Random Difficulty Mode is ON
     if (level <= 5) return "Easy";
@@ -75,34 +150,38 @@ const GameBoard = () => {
   };
 
   // Function to generate a new puzzle and reset game state
-  const startNewPuzzle = () => {
+  const startNewPuzzle = (overrideLevel = level) => { //Use level argument
     setTubes([]); // Temporarily clear tubes
     setAnimateReset(true); // Trigger flicker-in animation when new tubes load
-
+  
     setTimeout(() => {
-      const { tubes: initialTubesState } = generatePuzzle(
-        level,
-        randomDifficulty
-      ); // Pass randomDifficulty
+      const { tubes: initialTubesState } = generatePuzzle(overrideLevel, randomDifficulty); 
       setTubes(initialTubesState);
-      setInitialTubes(initialTubesState.map((tube) => [...tube]));
+      setInitialTubes(initialTubesState.map(tube => [...tube])); // Save new puzzle state
       setMoveHistory([]);
       setSelectedTube(null);
       setHighlightedPieces([]);
       setRecentlyMoved([]);
       setIsSolved(false);
-
+  
       setTimeout(() => {
         setAnimateReset(false); // Reset animation state after it plays
-      }, 300); // Slight delay to ensure animation applies
+      }, 300);
     }, 10);
   };
+  
 
   // Function to progress to the next level and generate a new puzzle
   const handleNextLevel = () => {
     setPlayNextLevel(true); // Trigger next level sound
+  
     setTimeout(() => {
-      setLevel((prevLevel) => prevLevel + 1);
+      setLevel(prevLevel => {
+        const newLevel = prevLevel + 1;
+        setTimeout(() => startNewPuzzle(newLevel), 10); // Generate a new puzzle
+        return newLevel; // Ensures the state updates properly
+      });
+  
       setPlayNextLevel(false); // Reset state after sound plays
     }, 10);
   };
@@ -225,8 +304,9 @@ const GameBoard = () => {
     setTimeout(() => {
       setAnimateReset(true);
       setPlayReset(true); // Trigger flicker-in animation for board reset
+  
       setTimeout(() => {
-        setTubes(initialTubes.map((tube) => [...tube]));
+        setTubes(initialTubes.map(tube => [...tube])); // Restore from initial state
         setMoveHistory([]);
         setSelectedTube(null);
         setHighlightedPieces([]);
@@ -325,6 +405,9 @@ const GameBoard = () => {
                   Mute Background Music
                 </label>
               </div>
+
+              {/* New Game Button */}
+        <button className='new-game-button' onClick={clearGameState}>New Game</button>
             </div>
           </div>
         </div>

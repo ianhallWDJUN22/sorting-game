@@ -421,7 +421,7 @@ button:hover {
     width: 525px;
     text-align: center;
     box-shadow: 0 0 10px #00ff00;
-    padding-bottom: 40px;
+    padding-bottom: 20px;
   }
   
   .toggle-list {
@@ -487,6 +487,25 @@ button:hover {
   opacity: 1;
 }
 
+.new-game-button {
+  margin-top: 60px;
+  padding: 10px;
+  width: 190px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #00ff00;
+  background-color: #343434;
+  border: 2px solid #00ff00;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.new-game-button:hover {
+  background-color: #00ff00;
+  color: black;
+}
+
+
 /* "?" Button */
 .info-button {
   position: fixed;
@@ -536,7 +555,7 @@ button:hover {
   justify-content: center;
   text-align: center;
   font-size: 25px;
-  margin-top: -70px;
+  margin-top: -80px;
   padding: 0px;
 }
 
