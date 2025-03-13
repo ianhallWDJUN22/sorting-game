@@ -49,7 +49,7 @@ const GameBoard = () => {
   useEffect(() => {
     bgMusicRef.current = new Audio("/sorting-game/audio/bgMusic.wav");
     bgMusicRef.current.loop = true;
-    bgMusicRef.current.volume = 0.05; // Adjust volume as needed
+    bgMusicRef.current.volume = 0.1; // Adjust volume as needed
 
     if (!muteMusic) {
       bgMusicRef.current
