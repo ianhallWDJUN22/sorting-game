@@ -373,7 +373,7 @@ const GameBoard = () => {
                     "Master"
                   </li>
                   <li>
-                    Or switch to Random difficulty mode in the settings for a
+                    Or switch to Random Difficulty Mode in the settings for a
                     more varied experience
                   </li>
                   <li>-</li>
