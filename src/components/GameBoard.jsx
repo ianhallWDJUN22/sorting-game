@@ -24,6 +24,7 @@ const GameBoard = () => {
   const [playLevelClear, setPlayLevelClear] = useState(false);
   const [playReset, setPlayReset] = useState(false);
   const [muted, setMuted] = useState(false); // New state for mute functionality
+  const [muteMusic, setMuteMusic] = useState(true); // Controls background music, default to muted
   const bgMusicRef = useRef(null); // Reference for bgMusic
 
   
@@ -34,35 +35,30 @@ const GameBoard = () => {
   }, [level]);
 
 
-  // Set background music
-  useEffect(() => {
-    bgMusicRef.current = new Audio("/sorting-game/audio/bgMusic.wav"); 
-    bgMusicRef.current.loop = true;
-    bgMusicRef.current.volume = muted ? 0 : 0.05; // Adjust volume based on mute state
-
-    const enableAudio = () => {
-      if (!muted) {
-        bgMusicRef.current.play().catch(error => console.log("Autoplay prevented:", error));
-      }
-    };
-
-    document.addEventListener("click", enableAudio, { once: true });
-
-    return () => {
-      document.removeEventListener("click", enableAudio);
-      bgMusicRef.current.pause();
-      bgMusicRef.current.currentTime = 0;
-    };
-  }, [muted]); // Update when muted state changes
-
-  // Function to toggle mute
-  const toggleMute = () => {
+// Function to toggle mute
+const toggleMute = () => {
     setMuted(prev => !prev);
-    if (bgMusicRef.current) {
-      bgMusicRef.current.volume = muted ? 0.05 : 0; // Toggle between muted and unmuted
-    }
   };
 
+
+const toggleMuteMusic = () => {
+    setMuteMusic(prev => !prev);
+};
+
+useEffect(() => {
+    bgMusicRef.current = new Audio("/sorting-game/audio/bgMusic.wav"); 
+    bgMusicRef.current.loop = true;
+    bgMusicRef.current.volume = 0.05; // Adjust volume as needed
+
+    if (!muteMusic) {
+        bgMusicRef.current.play().catch(error => console.log("Autoplay prevented:", error));
+    }
+
+    return () => {
+        bgMusicRef.current.pause();
+        bgMusicRef.current.currentTime = 0;
+    };
+}, [muteMusic]);
 
     // Function to determine difficulty label based on level
     const getDifficultyLabel = (level) => {
@@ -251,7 +247,7 @@ const GameBoard = () => {
 
   return (
     <div>
-      <SoundManager playNextLevel={playNextLevel} playLevelClear={playLevelClear} playReset={playReset}/>
+      <SoundManager playNextLevel={playNextLevel} playLevelClear={playLevelClear} playReset={playReset} muted={muted}/>
       {/* Settings Button */}
       <div className="instructions-container">
       <button className="settings-button" onClick={toggleSettings}>⚙️</button>
@@ -268,8 +264,12 @@ const GameBoard = () => {
             <h3>Audio:</h3>
             <label className="mute-toggle">
                 <input type="checkbox" checked={muted} onChange={toggleMute} />
-                Mute Background Music
+                Mute All Sounds
               </label>
+              <label className="mute-toggle">
+    <input type="checkbox" checked={muteMusic} onChange={toggleMuteMusic} />
+    Mute Background Music
+  </label>
             </div>
           </div>
         </div>
@@ -294,12 +294,12 @@ const GameBoard = () => {
               <h3>Rules:</h3>
               <ul>
                 <li>Click a tube to select the topmost tile</li>
-                <li>Click another tube to move the tile there</li>
+                <li>Click another tube to move that tile there</li>
                 <li>You may only move a tile onto a tile of the same color or to an empty tube</li>
                 <li>Undo your last move with the "Undo" button</li>
                 <li>Reset the current puzzle with the "Reset" button</li>
                 <li>Complete the puzzle to advance to the next level</li>
-                <li>The difficulty will increase as you play - from "Easy" to "Master"</li>
+                <li>The difficulty will increase as you play from "Easy" to "Master"</li>
                 <li>-</li>
                 <li>Happy sorting!</li>
               </ul>

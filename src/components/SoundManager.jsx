@@ -1,46 +1,47 @@
 import React, { useEffect, useRef } from "react";
 
-const SoundManager = ({ playNextLevel, playReset, playLevelClear }) => {
+const SoundManager = ({ playNextLevel, playReset, playLevelClear, muted }) => {
   const nextLevelAudioRef = useRef(null);
   const resetAudioRef = useRef(null);
   const levelClearAudioRef = useRef(null);
 
   useEffect(() => {
     nextLevelAudioRef.current = new Audio("/sorting-game/audio/newBoard.wav");
-    nextLevelAudioRef.current.volume = 0.05;
+    nextLevelAudioRef.current.volume = muted ? 0 : 0.05;
 
-    resetAudioRef.current = new Audio("/sorting-game/audio/reset2.mp3"); // Use `.wav` since that’s your actual file
-    resetAudioRef.current.volume = 0.25;
+    resetAudioRef.current = new Audio("/sorting-game/audio/reset2.mp3");
+    resetAudioRef.current.volume = muted ? 0 : 0.25;
 
     levelClearAudioRef.current = new Audio("/sorting-game/audio/levelClear.wav");
-    levelClearAudioRef.current.volume = 0.4;
-  }, []);
+    levelClearAudioRef.current.volume = muted ? 0 : 0.4;
+  }, [muted]); // Update whenever mute state changes
 
   useEffect(() => {
-    if (playNextLevel) {
-      nextLevelAudioRef.current.currentTime = 0; // Restart sound
+    if (playNextLevel && !muted) {
+      nextLevelAudioRef.current.currentTime = 0;
       nextLevelAudioRef.current.play();
     }
-  }, [playNextLevel]);
+  }, [playNextLevel, muted]);
 
   useEffect(() => {
-    if (playReset) {
-      resetAudioRef.current.currentTime = 0; // Ensure it starts from beginning
+    if (playReset && !muted) {
+      resetAudioRef.current.currentTime = 0;
       resetAudioRef.current.play();
     }
-  }, [playReset]);
+  }, [playReset, muted]);
 
   useEffect(() => {
-    if (playLevelClear) {
-      levelClearAudioRef.current.currentTime = 0; // Restart sound
+    if (playLevelClear && !muted) {
+      levelClearAudioRef.current.currentTime = 0;
       levelClearAudioRef.current.play();
     }
-  }, [playLevelClear]);
+  }, [playLevelClear, muted]);
 
-  return null; // No UI elements needed
+  return null;
 };
 
 export default SoundManager;
+
 
 
 
