@@ -19,6 +19,7 @@ const GameBoard = () => {
   const [closingSettings, setClosingSettings] = useState(false);
   const [randomDifficulty, setRandomDifficulty] = useState(false);
   const [pendingNewGame, setPendingNewGame] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
   //animation states
   const [animateReset, setAnimateReset] = useState(false);
   //audio states
@@ -70,6 +71,7 @@ useEffect(() => {
   
     // Close the settings modal
     setShowSettings(false);
+    setShowConfirmation(false);
   
     // Reset relevant game states
     setTubes([]);
@@ -407,7 +409,21 @@ useEffect(() => {
               </div>
 
               {/* New Game Button */}
-        <button className='new-game-button' onClick={clearGameState}>New Game</button>
+              <button className='new-game-button' onClick={() => setShowConfirmation(true)}>
+                New Game
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Confirmation Pop-up */}
+      {showConfirmation && (
+        <div className='confirmation-overlay'>
+          <div className='confirmation-modal'>
+            <p>Starting a new game will overwrite all your progress. Are you sure?</p>
+            <div className='confirmation-buttons'>
+              <button className='confirm-button' onClick={clearGameState}>Continue</button>
+              <button className='cancel-button' onClick={() => setShowConfirmation(false)}>Cancel</button>
             </div>
           </div>
         </div>
