@@ -1,9 +1,9 @@
 // Function to determine the number of colors based on the current level
 const getNumColorsForLevel = (level) => {
     if (level <= 5) return 6;
-    if (level <= 10) return 7;
-    if (level <= 15) return 8;
-    if (level <= 20) return 9;
+    if (level <= 14) return 7;
+    if (level <= 24) return 8;
+    if (level <= 39) return 9;
     return 10;
 };
 

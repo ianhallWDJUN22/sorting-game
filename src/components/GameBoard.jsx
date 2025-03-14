@@ -143,9 +143,9 @@ useEffect(() => {
   const getDifficultyLabel = (level, randomDifficulty) => {
     if (randomDifficulty) return "???"; // Return "???" if Random Difficulty Mode is ON
     if (level <= 5) return "Easy";
-    if (level <= 10) return "Intermediate";
-    if (level <= 15) return "Hard";
-    if (level <= 20) return "Expert";
+    if (level <= 14) return "Intermediate";
+    if (level <= 24) return "Hard";
+    if (level <= 39) return "Expert";
     return "Master";
   };
 
