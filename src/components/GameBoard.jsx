@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { generatePuzzle } from "../utils/gameLogic";
 import "../styles/GameBoard.css";
 import SoundManager from "./SoundManager";
+import themes from "../utils/themes";
 
 const GameBoard = () => {
   // State variables to manage game state
@@ -20,6 +21,8 @@ const GameBoard = () => {
   const [randomDifficulty, setRandomDifficulty] = useState(false);
   const [pendingNewGame, setPendingNewGame] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
+  // theme states
+  const [selectedTheme, setSelectedTheme] = useState("default");
   //animation states
   const [animateReset, setAnimateReset] = useState(false);
   //audio states
@@ -30,29 +33,60 @@ const GameBoard = () => {
   const [muteMusic, setMuteMusic] = useState(true); // Controls background music
   const bgMusicRef = useRef(null); // Reference for bgMusic
 
+  // Function to apply theme
+  const applyTheme = (themeName) => {
+    if (selectedTheme !== themeName) {
+      setClosingSettings(true); // Start flicker-out animation
+      setTimeout(() => {
+        setClosingSettings(false); // Trigger flicker-in animation
+        const theme = themes[themeName] || themes.default;
+        Object.entries(theme).forEach(([key, value]) => {
+          document.documentElement.style.setProperty(key, value);
+        });
+        setSelectedTheme(themeName); // Update state
+        localStorage.setItem("selectedTheme", themeName); // Save preference
+      }, 100); // Matches flicker animation timing
+    }
+  };
+  
+
+  // Load saved theme from local storage
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("selectedTheme");
+    if (savedTheme && themes[savedTheme]) {
+      applyTheme(savedTheme);
+    }
+  }, []);
 
   // Save game state in local storage
-useEffect(() => {
-  if (tubes.length > 0) { // Prevent saving empty state on load
-    const gameState = {
-      tubes,
-      initialTubes,
-      moveHistory,
-      level,
-      isSolved,
-      randomDifficulty, 
-    };
-    localStorage.setItem("gameState", JSON.stringify(gameState));
-  }
-}, [tubes, moveHistory, level, isSolved]);
-
+  useEffect(() => {
+    if (tubes.length > 0) {
+      // Prevent saving empty state on load
+      const gameState = {
+        tubes,
+        initialTubes,
+        moveHistory,
+        level,
+        isSolved,
+        randomDifficulty,
+      };
+      localStorage.setItem("gameState", JSON.stringify(gameState));
+    }
+  }, [tubes, moveHistory, level, isSolved]);
 
   // Retrieve the saved game
   useEffect(() => {
     const savedGame = localStorage.getItem("gameState");
-  
+
     if (savedGame) {
-      const { tubes, initialTubes, moveHistory, level, isSolved, randomDifficulty } = JSON.parse(savedGame);
+      const {
+        tubes,
+        initialTubes,
+        moveHistory,
+        level,
+        isSolved,
+        randomDifficulty,
+      } = JSON.parse(savedGame);
       setTubes(tubes);
       setInitialTubes(initialTubes);
       setMoveHistory(moveHistory);
@@ -63,16 +97,15 @@ useEffect(() => {
       startNewPuzzle(); // Only start a new puzzle if no saved data exists
     }
   }, []);
-  
 
   // Removes the saved game from local storage and resets everything
   const clearGameState = () => {
     localStorage.removeItem("gameState");
-  
+
     // Close the settings modal
     setShowSettings(false);
     setShowConfirmation(false);
-  
+
     // Reset relevant game states
     setTubes([]);
     setInitialTubes([]);
@@ -81,31 +114,28 @@ useEffect(() => {
     setHighlightedPieces([]);
     setRecentlyMoved([]);
     setIsSolved(false);
-  
+
     // Ensure level and randomDifficulty reset before generating a new puzzle
     setRandomDifficulty(false);
     setLevel(1);
-  
+
     // Set flag to indicate a new game is pending
     setPendingNewGame(true);
   };
-  
+
   // ✅ Ensure a new game starts AFTER the state update is fully applied
   useEffect(() => {
     if (pendingNewGame) {
       startNewPuzzle(1);
       setPendingNewGame(false); // Reset flag after starting new game
     }
-  }, [level, randomDifficulty, pendingNewGame]); 
-  
-  
+  }, [level, randomDifficulty, pendingNewGame]);
 
-  
-  
   // Effect to initialize the first puzzle on component mount
   useEffect(() => {
     const savedGame = localStorage.getItem("gameState");
-    if (!savedGame) { // ✅ Only generate a new puzzle if no saved state exists
+    if (!savedGame) {
+      // ✅ Only generate a new puzzle if no saved state exists
       startNewPuzzle();
     }
   }, [level]);
@@ -122,7 +152,6 @@ useEffect(() => {
   const toggleMuteMusic = () => {
     setMuteMusic((prev) => !prev);
   };
-
 
   useEffect(() => {
     bgMusicRef.current = new Audio("/sorting-game/audio/bgMusic.wav");
@@ -152,38 +181,41 @@ useEffect(() => {
   };
 
   // Function to generate a new puzzle and reset game state
-  const startNewPuzzle = (overrideLevel = level) => { //Use level argument
+  const startNewPuzzle = (overrideLevel = level) => {
+    //Use level argument
     setTubes([]); // Temporarily clear tubes
     setAnimateReset(true); // Trigger flicker-in animation when new tubes load
-  
+
     setTimeout(() => {
-      const { tubes: initialTubesState } = generatePuzzle(overrideLevel, randomDifficulty); 
+      const { tubes: initialTubesState } = generatePuzzle(
+        overrideLevel,
+        randomDifficulty
+      );
       setTubes(initialTubesState);
-      setInitialTubes(initialTubesState.map(tube => [...tube])); // Save new puzzle state
+      setInitialTubes(initialTubesState.map((tube) => [...tube])); // Save new puzzle state
       setMoveHistory([]);
       setSelectedTube(null);
       setHighlightedPieces([]);
       setRecentlyMoved([]);
       setIsSolved(false);
-  
+
       setTimeout(() => {
         setAnimateReset(false); // Reset animation state after it plays
       }, 300);
     }, 10);
   };
-  
 
   // Function to progress to the next level and generate a new puzzle
   const handleNextLevel = () => {
     setPlayNextLevel(true); // Trigger next level sound
-  
+
     setTimeout(() => {
-      setLevel(prevLevel => {
+      setLevel((prevLevel) => {
         const newLevel = prevLevel + 1;
         setTimeout(() => startNewPuzzle(newLevel), 10); // Generate a new puzzle
         return newLevel; // Ensures the state updates properly
       });
-  
+
       setPlayNextLevel(false); // Reset state after sound plays
     }, 10);
   };
@@ -306,9 +338,9 @@ useEffect(() => {
     setTimeout(() => {
       setAnimateReset(true);
       setPlayReset(true); // Trigger flicker-in animation for board reset
-  
+
       setTimeout(() => {
-        setTubes(initialTubes.map(tube => [...tube])); // Restore from initial state
+        setTubes(initialTubes.map((tube) => [...tube])); // Restore from initial state
         setMoveHistory([]);
         setSelectedTube(null);
         setHighlightedPieces([]);
@@ -349,12 +381,7 @@ useEffect(() => {
       {/* Settings Button */}
       <div className='instructions-container'>
         <button className='settings-button' onClick={toggleSettings}>
-          <svg
-            className='settings-icon'
-            stroke='#00ff00'
-            fill='#00ff00;'
-            xmlns='http://www.w3.org/2000/svg'
-          >
+          <svg className='settings-icon' xmlns='http://www.w3.org/2000/svg'>
             <path d='M20.991,10H19.42a1.039,1.039,0,0,1-.951-.674l-.005-.013a1.04,1.04,0,0,1,.2-1.146l1.11-1.11a1.01,1.01,0,0,0,0-1.428l-1.4-1.4a1.01,1.01,0,0,0-1.428,0l-1.11,1.11a1.04,1.04,0,0,1-1.146.2l-.013,0A1.04,1.04,0,0,1,14,4.579V3.009A1.009,1.009,0,0,0,12.991,2H11.009A1.009,1.009,0,0,0,10,3.009v1.57a1.04,1.04,0,0,1-.674.952l-.013,0a1.04,1.04,0,0,1-1.146-.2l-1.11-1.11a1.01,1.01,0,0,0-1.428,0l-1.4,1.4a1.01,1.01,0,0,0,0,1.428l1.11,1.11a1.04,1.04,0,0,1,.2,1.146l0,.013A1.039,1.039,0,0,1,4.58,10H3.009A1.009,1.009,0,0,0,2,11.009v1.982A1.009,1.009,0,0,0,3.009,14H4.58a1.039,1.039,0,0,1,.951.674l0,.013a1.04,1.04,0,0,1-.2,1.146l-1.11,1.11a1.01,1.01,0,0,0,0,1.428l1.4,1.4a1.01,1.01,0,0,0,1.428,0l1.11-1.11a1.04,1.04,0,0,1,1.146-.2l.013.005A1.039,1.039,0,0,1,10,19.42v1.571A1.009,1.009,0,0,0,11.009,22h1.982A1.009,1.009,0,0,0,14,20.991V19.42a1.039,1.039,0,0,1,.674-.951l.013-.005a1.04,1.04,0,0,1,1.146.2l1.11,1.11a1.01,1.01,0,0,0,1.428,0l1.4-1.4a1.01,1.01,0,0,0,0-1.428l-1.11-1.11a1.04,1.04,0,0,1-.2-1.146l.005-.013A1.039,1.039,0,0,1,19.42,14h1.571A1.009,1.009,0,0,0,22,12.991V11.009A1.009,1.009,0,0,0,20.991,10ZM12,15a3,3,0,1,1,3-3A3,3,0,0,1,12,15Z' />
           </svg>
         </button>
@@ -387,6 +414,42 @@ useEffect(() => {
                 </label>
               </div>
 
+              {/* Visuals Section */}
+              <h3>Visuals:</h3>
+              <div className='toggle-list'>
+                <label className='theme-toggle'>
+                  <input
+                    type='radio'
+                    name='theme'
+                    value='default'
+                    checked={selectedTheme === "default"}
+                    onChange={() => applyTheme("default")}
+                  />
+                  Green
+                </label>
+
+                <label className='theme-toggle'>
+                  <input
+                    type='radio'
+                    name='theme'
+                    value='cyan'
+                    checked={selectedTheme === "cyan"}
+                    onChange={() => applyTheme("cyan")}
+                  />
+                  Cyan
+                </label>
+                <label className='theme-toggle'>
+                  <input
+                    type='radio'
+                    name='theme'
+                    value='magenta'
+                    checked={selectedTheme === "magenta"}
+                    onChange={() => applyTheme("magenta")}
+                  />
+                  Magenta
+                </label>
+              </div>
+
               {/* Audio Section */}
               <h3>Audio:</h3>
               <div className='toggle-list'>
@@ -409,7 +472,10 @@ useEffect(() => {
               </div>
 
               {/* New Game Button */}
-              <button className='new-game-button' onClick={() => setShowConfirmation(true)}>
+              <button
+                className='new-game-button'
+                onClick={() => setShowConfirmation(true)}
+              >
                 New Game
               </button>
             </div>
@@ -420,10 +486,20 @@ useEffect(() => {
       {showConfirmation && (
         <div className='confirmation-overlay'>
           <div className='confirmation-modal'>
-            <p>Starting a new game will overwrite all your progress. Are you sure?</p>
+            <p>
+              Starting a new game will overwrite all your progress. Are you
+              sure?
+            </p>
             <div className='confirmation-buttons'>
-              <button className='confirm-button' onClick={clearGameState}>Continue</button>
-              <button className='cancel-button' onClick={() => setShowConfirmation(false)}>Cancel</button>
+              <button className='confirm-button' onClick={clearGameState}>
+                Continue
+              </button>
+              <button
+                className='cancel-button'
+                onClick={() => setShowConfirmation(false)}
+              >
+                Cancel
+              </button>
             </div>
           </div>
         </div>

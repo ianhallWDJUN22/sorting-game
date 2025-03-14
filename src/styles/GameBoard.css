@@ -2,9 +2,17 @@
 
 @import url("https://fonts.googleapis.com/css2?family=VT323&display=swap");
 
+
+/* Root variables for themes */
+:root {
+  --primary-color: #00ff00;
+  --border-selected: 2px solid #60ffef;
+  --box-shadow-selected: 0px 0px 15px #00ffbb;
+}
+
 body {
   background-color: #0d0d0d;
-  color: #33ff33;
+  color: var(--primary-color);
   font-family: "VT323", monospace;
 }
 body::before {
@@ -21,7 +29,7 @@ body::before {
     transparent 4px
   );
   pointer-events: none;
-  z-index: 10;
+  z-index: 10000;
 }
 
 /* Game Board */
@@ -41,9 +49,9 @@ body::before {
   flex-direction: column-reverse; /* Ensures pieces stack from bottom to top */
   align-items: center;
   width: 60px;
-  border: 2px solid #00ff00;
+  border: 2px solid var(--primary-color);
   background: rgba(0, 255, 0, 0.1);
-  box-shadow: 0px 0px 10px #00ff00;
+  box-shadow: 0px 0px 10px var(--primary-color);
   border-radius: 5px;
   cursor: pointer;
   transition: border-color 0.3s;
@@ -53,8 +61,8 @@ body::before {
 }
 
 .tube.selected {
-  border: 2px solid #60ffef;
-  box-shadow: 0px 0px 15px #00ffbb;
+  border: var(--border-selected);
+  box-shadow: var(--box-shadow-selected);
 }
 
 /* Pieces as Data Packets */
@@ -72,7 +80,7 @@ body::before {
 .piece.highlighted {
   transform: scale(1.06);
   animation: flicker-in-highlight 0.2s;
-  box-shadow: 0px 0px 10px #558b8d;
+  box-shadow: var(--box-shadow-selected);
 }
 
 /* Colors for Pieces */
@@ -184,8 +192,8 @@ body::before {
 /* Hacker-Style Buttons */
 button {
   background: rgb(0, 19, 3);
-  color: #00ff00;
-  border: 1px solid #00ff00;
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
   padding: 10px 20px;
   font-family: "VT323", monospace;
   font-size: 15px;
@@ -195,9 +203,9 @@ button {
 }
 
 button:hover {
-  background: #00ff00;
+  background: var(--primary-color);
   color: black;
-  box-shadow: 0px 0px 5px #00ff00;
+  box-shadow: 0px 0px 5px var(--primary-color);
 }
 
 @keyframes flicker-in-tubes {
@@ -371,7 +379,7 @@ button:hover {
 .settings-icon {
   width: 24px; /* Adjust as needed */
   height: 24px;
-  stroke: #00ff00; /* Matches your game's color theme */
+  stroke: var(--primary-color); /* Matches your game's color theme */
   transition: transform 0.2s ease-in-out;
   justify-self: center;
 
@@ -387,7 +395,7 @@ button:hover {
   cursor: pointer;
   padding: 6px 10px;
   padding-top: 10px;
-
+  z-index: 5;
 }
 
 .settings-button:hover .settings-icon {
@@ -397,7 +405,7 @@ button:hover {
 
 .settings-button:hover {
   color: black;
-  box-shadow: 0px 0px 5px #00ff00;
+  box-shadow: 0px 0px 5px var(--primary-color);
 }
 
   
@@ -411,7 +419,8 @@ button:hover {
     display: flex;
     justify-content: center;
     align-items: center;
-    
+    background-color: rgba(24, 23, 23, 0.589);
+    z-index: 8;
   }
   
   .modal-settings {
@@ -420,8 +429,9 @@ button:hover {
     border-radius: 8px;
     width: 525px;
     text-align: center;
-    box-shadow: 0 0 10px #00ff00;
+    box-shadow: 0 0 10px var(--primary-color);
     padding-bottom: 20px;
+    z-index: 9;
   }
   
   .toggle-list {
@@ -434,74 +444,95 @@ button:hover {
     margin: 0 auto; /* Centers the entire div inside the modal */
   }
   
-  .mute-toggle {
+  .theme-toggle {
     display: flex;
-    align-items: center; /* Aligns checkbox and label text */
+    align-items: center; /* Aligns radio button and text */
     text-align: left; /* Ensures text is aligned left */
-    width: 100%; /* Makes each label take full width of .toggle-list */
-    gap: 8px; /* Adds spacing between checkbox and text */
+    width: 100%; /* Makes each label take full width */
+    gap: 8px; /* Spacing between radio button and text */
     font-size: 18px;
-    color: #00ff00;
+    color: var(--primary-color);
     cursor: pointer;
     font-weight: bold;
     margin-bottom: 10px;
   }
   
+  .mute-toggle {
+    display: flex;
+    align-items: center;
+    text-align: left;
+    width: 100%;
+    font-size: 18px;
+    color: var(--primary-color);
+    cursor: pointer;
+    font-weight: bold;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  /* Hide Default Radio Button */
+  .mute-toggle input[type="checkbox"],
+  .theme-toggle input[type="radio"] {
+    appearance: none;
+    font-family: "VT323", monospace;
+    text-align: center;
+    width: 25px;
+    height: 25px;
+    border: 2px solid var(--primary-color);
+    background: #222;
+    border-radius: 5px;
+    cursor: pointer;
+    position: relative;
+    margin-right: 10px;
+    transition: all 0.3s ease-in-out;
+  }
   
-/* Hide Default Checkbox */
-.mute-toggle input[type="checkbox"] {
-  appearance: none;
-  font-family: "VT323", monospace;
-  text-align: center;
-  width: 25px;
-  height: 25px;
-  border: 2px solid #00ff00;
-  background: #222;
-  border-radius: 5px;
-  cursor: pointer;
-  position: relative;
-  margin-right: 10px;
-  transition: all 0.3s ease-in-out;
-}
-
-/* Checked State */
-.mute-toggle input[type="checkbox"]:checked {
-  background-color: #00ff00ab;
-  border-color: #00ff00;
-}
-
-/* Add Custom Checkmark */
-.mute-toggle input[type="checkbox"]::before {
-  content: "X";
-  font-size: 22px;
-  font-weight: bolder;
-  color: #222;
-  position: absolute;
-  left: 30%;
-  opacity: 0;
-  transition: opacity 0.2s;
-}
-
-/* Show Checkmark When Checked */
-.mute-toggle input[type="checkbox"]:checked::before {
-  opacity: 1;
-}
+  /* ✅ Keep checkboxes and radios filling in when selected */
+  .mute-toggle input[type="checkbox"]:checked,
+  .theme-toggle input[type="radio"]:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+  }
+  
+  /* ✅ Restore the "X" inside checkboxes while keeping radio buttons solid */
+  .mute-toggle input[type="checkbox"]::before {
+   
+    font-size: 22px;
+    font-weight: bolder;
+    color: #222;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0; /* Start hidden */
+    transition: opacity 0.2s ease-in-out;
+  }
+  
+  /* ✅ Ensure checkmark appears for checked checkboxes */
+  .mute-toggle input[type="checkbox"]:checked::before {
+    opacity: 1;
+  }
+  
+ /*Remove the inner dot from radio buttons */
+  .theme-toggle input[type="radio"]::before {
+    display: none;
+  }
 
 .new-game-button {
-  margin-top: 60px;
+  margin-top: 70px;
   padding: 10px;
-  width: 190px;
+  width: 150px;
   font-size: 18px;
   font-weight: bold;
-  color: #00ff00;
+  color: var(--primary-color);
   background-color: #343434;
-  border: 2px solid #00ff00;
+  border: 2px solid var(--primary-color);
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 }
 
 .new-game-button:hover {
-  background-color: #00ff00;
+  background-color: var(--primary-color);
   color: black;
 }
 
@@ -515,18 +546,18 @@ button:hover {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 8;
 }
 
 .confirmation-modal {
   background: #222;
-  color:  #00ff00;
+  color:  var(--primary-color);
   font-size: 18px;
   padding: 20px;
   border-radius: 10px;
   text-align: center;
   width: 300px;
-  box-shadow: 0px 0px 10px rgba(0, 255, 0, 0.5);
+  box-shadow: 0px 0px 10px var(--primary-color);
 }
 
 .confirmation-buttons {
@@ -540,9 +571,9 @@ button:hover {
   padding: 10px;
   font-size: 15px;
   font-weight: bold;
-  color: #00ff00;
+  color: var(--primary-color);
   background-color: #343434;
-  border: 2px solid #00ff00;
+  border: 2px solid var(--primary-color);
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 }
@@ -553,15 +584,12 @@ button:hover {
   padding: 10px;
   font-size: 15px;
   font-weight: bold;
-  color: #00ff00;
+  color: var(--primary-color);
   background-color: #343434;
-  border: 2px solid #00ff00;
+  border: 2px solid var(--primary-color);
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 }
-
-
-
 
 /* "?" Button */
 .info-button {
@@ -572,13 +600,14 @@ button:hover {
   border: none;
   font-size: 23px;
   font-weight: bold;
-  color: #00ff00;
+  color: var(--primary-color);
   cursor: pointer;
   padding: 10px 17px;
+  z-index: 5;
 }
 
 .info-button:hover {
-  background-color: #00ff00;
+  background-color: var(--primary-color);
 }
 
 /* Modal Overlay */
@@ -591,7 +620,6 @@ button:hover {
   display: flex;
   justify-content: center;
   align-items: center;
-  
 }
 
 /* Modal Window */
@@ -601,8 +629,9 @@ button:hover {
   border-radius: 8px;
   width: 525px;
   text-align: center;
-  box-shadow: 0 0 10px #00ff00;
+  box-shadow: 0 0 10px var(--primary-color);
   padding-bottom: 20px;
+  z-index: 10;
 }
 
 /* Modal Header */
@@ -612,7 +641,7 @@ button:hover {
   justify-content: center;
   text-align: center;
   font-size: 25px;
-  margin-top: -80px;
+  margin-top: -90px;
   padding: 0px;
 }
 
@@ -624,12 +653,12 @@ button:hover {
 /* "X" Close Button */
 .close-button {
   position: relative;
-  top: -35px;
-  right: -47%;
+  top: -30px;
+  right: -45.5%;
   background: none;
   font-size: 20px;
   font-weight: bold;
-  color: #00ff00;
+  color: var(--primary-color);
   cursor: pointer;
   padding: 10px 17px;
   background: #222;
@@ -676,20 +705,15 @@ li {
     flex-direction: column-reverse; /* Ensures pieces stack from bottom to top */
     align-items: center;
     width: 40px;
-    border: 2px solid #00ff00;
+    border: 2px solid var(--primary-color);
     background: rgba(0, 255, 0, 0.1);
-    box-shadow: 0px 0px 10px #00ff00;
+    box-shadow: 0px 0px 10px var(--primary-color);
     border-radius: 5px;
     cursor: pointer;
     transition: border-color 0.3s;
     padding: 2px;
     padding-top: 10px;
     min-height: 152px;
-  }
-
-  .tube.selected {
-    border: 2px solid #60ffef;
-    box-shadow: 0px 0px 15px #00ffbb;
   }
 
   /* Pieces as Data Packets */
@@ -731,9 +755,9 @@ li {
     flex-direction: column-reverse; /* Ensures pieces stack from bottom to top */
     align-items: center;
     width: 25px;
-    border: 2px solid #00ff00;
+    border: 2px solid var(--primary-color);
     background: rgba(0, 255, 0, 0.1);
-    box-shadow: 0px 0px 10px #00ff00;
+    box-shadow: 0px 0px 10px var(--primary-color);
     border-radius: 5px;
     cursor: pointer;
     transition: border-color 0.3s;
@@ -741,11 +765,6 @@ li {
     padding-top: 10px;
     min-height: 96px;
     margin-bottom: 20px;
-  }
-
-  .tube.selected {
-    border: 2px solid #60ffef;
-    box-shadow: 0px 0px 15px #00ffbb;
   }
 
   /* Pieces as Data Packets */
@@ -782,7 +801,7 @@ li {
     border-radius: 8px;
     width: 60vw;
     text-align: center;
-    box-shadow: 0 0 10px #00ff00;
+    box-shadow: 0 0 10px var(--primary-color);
   }
   .modal-settings {
     background: #222;
@@ -790,7 +809,7 @@ li {
     border-radius: 8px;
     width: 500px;
     text-align: center;
-    box-shadow: 0 0 10px #00ff00;
+    box-shadow: 0 0 10px var(--primary-color);
   }
 
   .settings-button {
@@ -801,7 +820,7 @@ li {
     border: none;
     font-size: 18px;
     font-weight: bold;
-    color: #00ff00;
+    color: var(--primary-color);
     cursor: pointer;
     padding: 8px 13px;
   }
@@ -815,13 +834,13 @@ li {
     border: none;
     font-size: 23px;
     font-weight: bold;
-    color: #00ff00;
+    color: var(--primary-color);
     cursor: pointer;
     padding: 10px 17px;
   }
 
   .info-button:hover {
-    background-color: #00ff00;
+    background-color: var(--primary-color);
   }
 
   .modal-overlay-settings {
@@ -844,7 +863,7 @@ li {
     border-radius: 8px;
     width: 80vw;
     text-align: center;
-    box-shadow: 0 0 10px #00ff00;
+    box-shadow: 0 0 10px var(--primary-color);
     padding-bottom: 40px;
   }
 
@@ -868,7 +887,7 @@ li {
     border-radius: 8px;
     width: 80vw;
     text-align: center;
-    box-shadow: 0 0 10px #00ff00;
+    box-shadow: 0 0 10px var(--primary-color);
   }
 
 
@@ -896,7 +915,7 @@ li {
     background: none;
     font-size: 20px;
     font-weight: bold;
-    color: #00ff00;
+    color: var(--primary-color);
     cursor: pointer;
     padding: 10px 17px;
     background: #222;
