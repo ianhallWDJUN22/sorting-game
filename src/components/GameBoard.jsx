@@ -487,7 +487,7 @@ const GameBoard = () => {
         <div className='confirmation-overlay'>
           <div className='confirmation-modal'>
             <p>
-              Starting a new game will overwrite all your progress. Are you
+              Starting a new game will overwrite all progress. Are you
               sure?
             </p>
             <div className='confirmation-buttons'>
