@@ -29,26 +29,24 @@ const GameBoard = () => {
   const [playNextLevel, setPlayNextLevel] = useState(false);
   const [playLevelClear, setPlayLevelClear] = useState(false);
   const [playReset, setPlayReset] = useState(false);
-  const [muted, setMuted] = useState(false); // Mute functionality
-  const [muteMusic, setMuteMusic] = useState(true); // Controls background music
-  const bgMusicRef = useRef(null); // Reference for bgMusic
+  const [muted, setMuted] = useState(false);
+  const [muteMusic, setMuteMusic] = useState(true);
 
   // Function to apply theme
   const applyTheme = (themeName) => {
     if (selectedTheme !== themeName) {
-      setClosingSettings(true); // Start flicker-out animation
+      setClosingSettings(true); // Triggers flicker-out animation
       setTimeout(() => {
-        setClosingSettings(false); // Trigger flicker-in animation
+        setClosingSettings(false); // Triggers flicker-in animation
         const theme = themes[themeName] || themes.default;
         Object.entries(theme).forEach(([key, value]) => {
           document.documentElement.style.setProperty(key, value);
         });
         setSelectedTheme(themeName); // Update state
         localStorage.setItem("selectedTheme", themeName); // Save preference
-      }, 100); // Matches flicker animation timing
+      }, 100); // Used to match flicker animation timing
     }
   };
-  
 
   // Load saved theme from local storage
   useEffect(() => {
@@ -61,7 +59,7 @@ const GameBoard = () => {
   // Save game state in local storage
   useEffect(() => {
     if (tubes.length > 0) {
-      // Prevent saving empty state on load
+      // Prevents saving empty state on load
       const gameState = {
         tubes,
         initialTubes,
@@ -94,11 +92,12 @@ const GameBoard = () => {
       setIsSolved(isSolved);
       setRandomDifficulty(randomDifficulty);
     } else {
-      startNewPuzzle(); // Only start a new puzzle if no saved data exists
+      startNewPuzzle(); // Starts a new puzzle only if no saved data exists
     }
   }, []);
 
-  // Removes the saved game from local storage and resets everything
+  // Removes the saved gameState from local storage and resets relevent game states
+  // This is attached to the New Game button in the settings menu
   const clearGameState = () => {
     localStorage.removeItem("gameState");
 
@@ -123,19 +122,18 @@ const GameBoard = () => {
     setPendingNewGame(true);
   };
 
-  // ✅ Ensure a new game starts AFTER the state update is fully applied
+  // Ensure a new game starts AFTER the state update is fully applied
   useEffect(() => {
     if (pendingNewGame) {
       startNewPuzzle(1);
-      setPendingNewGame(false); // Reset flag after starting new game
+      setPendingNewGame(false);
     }
   }, [level, randomDifficulty, pendingNewGame]);
 
-  // Effect to initialize the first puzzle on component mount
+  // Initialize the first puzzle on component mount only if no saved game data exists
   useEffect(() => {
     const savedGame = localStorage.getItem("gameState");
     if (!savedGame) {
-      // ✅ Only generate a new puzzle if no saved state exists
       startNewPuzzle();
     }
   }, [level]);
@@ -144,19 +142,22 @@ const GameBoard = () => {
     setRandomDifficulty((prev) => !prev);
   };
 
-  // Function to toggle mute
+  // Mutes sound effects
   const toggleMute = () => {
     setMuted((prev) => !prev);
   };
-
+  // Mute background music
   const toggleMuteMusic = () => {
     setMuteMusic((prev) => !prev);
   };
 
+  const bgMusicRef = useRef(null);
+
+  // Play Background music on a loop
   useEffect(() => {
     bgMusicRef.current = new Audio("/sorting-game/audio/bgMusic.wav");
     bgMusicRef.current.loop = true;
-    bgMusicRef.current.volume = 0.1; // Adjust volume as needed
+    bgMusicRef.current.volume = 0.1;
 
     if (!muteMusic) {
       bgMusicRef.current
@@ -172,7 +173,7 @@ const GameBoard = () => {
 
   // Function to determine difficulty label based on level
   const getDifficultyLabel = (level, randomDifficulty) => {
-    if (randomDifficulty) return "???"; // Return "???" if Random Difficulty Mode is ON
+    if (randomDifficulty) return "???";
     if (level <= 5) return "Easy";
     if (level <= 14) return "Intermediate";
     if (level <= 24) return "Hard";
@@ -180,11 +181,10 @@ const GameBoard = () => {
     return "Master";
   };
 
-  // Function to generate a new puzzle and reset game state
+  // Generates a new puzzle
   const startNewPuzzle = (overrideLevel = level) => {
-    //Use level argument
-    setTubes([]); // Temporarily clear tubes
-    setAnimateReset(true); // Trigger flicker-in animation when new tubes load
+    setTubes([]);
+    setAnimateReset(true);
 
     setTimeout(() => {
       const { tubes: initialTubesState } = generatePuzzle(
@@ -192,7 +192,7 @@ const GameBoard = () => {
         randomDifficulty
       );
       setTubes(initialTubesState);
-      setInitialTubes(initialTubesState.map((tube) => [...tube])); // Save new puzzle state
+      setInitialTubes(initialTubesState.map((tube) => [...tube]));
       setMoveHistory([]);
       setSelectedTube(null);
       setHighlightedPieces([]);
@@ -200,20 +200,20 @@ const GameBoard = () => {
       setIsSolved(false);
 
       setTimeout(() => {
-        setAnimateReset(false); // Reset animation state after it plays
+        setAnimateReset(false);
       }, 300);
     }, 10);
   };
 
   // Function to progress to the next level and generate a new puzzle
   const handleNextLevel = () => {
-    setPlayNextLevel(true); // Trigger next level sound
+    setPlayNextLevel(true); // Triggers next level sound
 
     setTimeout(() => {
       setLevel((prevLevel) => {
         const newLevel = prevLevel + 1;
-        setTimeout(() => startNewPuzzle(newLevel), 10); // Generate a new puzzle
-        return newLevel; // Ensures the state updates properly
+        setTimeout(() => startNewPuzzle(newLevel), 10);
+        return newLevel;
       });
 
       setPlayNextLevel(false); // Reset state after sound plays
@@ -227,20 +227,20 @@ const GameBoard = () => {
       setTimeout(() => {
         setShowInstructions(false); // Hide modal after animation
         setClosingModal(false);
-      }, 300); // Matches flicker-out animation duration
+      }, 300);
     } else {
       setShowInstructions(true); // Show modal with flicker-in animation
     }
   };
 
-  // Function to toggle settings modal
+  // Toggle settings modal
   const toggleSettings = () => {
     if (showSettings) {
-      setClosingSettings(true); // Start flicker-out animation
+      setClosingSettings(true);
       setTimeout(() => {
-        setShowSettings(false); // Hide modal after animation
+        setShowSettings(false);
         setClosingSettings(false);
-      }, 300); // Matches flicker-out animation duration
+      }, 300);
     } else {
       setShowSettings(true); // Show modal with flicker-in animation
     }
@@ -322,6 +322,23 @@ const GameBoard = () => {
     setHighlightedPieces(stackToHighlight);
   };
 
+  // Checks if the puzzle has been successfully solved
+  const checkWinCondition = (currentTubes) => {
+    const allSorted = currentTubes.every(
+      (tube) =>
+        tube.length === 0 || (tube.length === 4 && new Set(tube).size === 1)
+    );
+
+    if (allSorted && !isSolved) {
+      setIsSolved(true);
+      setPlayLevelClear(true); // Play sound effect
+
+      setTimeout(() => {
+        setPlayLevelClear(false); //resets sound
+      }, 200);
+    }
+  };
+
   // Handles undoing the last move
   const handleUndo = () => {
     if (moveHistory.length === 0 || isSolved) return;
@@ -337,39 +354,22 @@ const GameBoard = () => {
   const handleReset = () => {
     setTimeout(() => {
       setAnimateReset(true);
-      setPlayReset(true); // Trigger flicker-in animation for board reset
+      setPlayReset(true); // Play Reset Sound Effect
 
       setTimeout(() => {
-        setTubes(initialTubes.map((tube) => [...tube])); // Restore from initial state
+        setTubes(initialTubes.map((tube) => [...tube])); // Restore from initial puzzle state
         setMoveHistory([]);
         setSelectedTube(null);
         setHighlightedPieces([]);
         setRecentlyMoved([]);
         setIsSolved(false);
-        setAnimateReset(false); // Reset animation after playing
+        setAnimateReset(false);
         setPlayReset(false);
       }, 200);
     }, 10);
   };
 
-  // Checks if the puzzle has been successfully solved
-  const checkWinCondition = (currentTubes) => {
-    const allSorted = currentTubes.every(
-      (tube) =>
-        tube.length === 0 || (tube.length === 4 && new Set(tube).size === 1)
-    );
-
-    if (allSorted && !isSolved) {
-      // Ensures it only triggers once
-      setIsSolved(true);
-      setPlayLevelClear(true); // Play sound effect
-
-      setTimeout(() => {
-        setPlayLevelClear(false); // Reset state to allow future plays
-      }, 200); // Adjust timing based on sound duration
-    }
-  };
-
+  // UI
   return (
     <div>
       <SoundManager
@@ -378,7 +378,7 @@ const GameBoard = () => {
         playReset={playReset}
         muted={muted}
       />
-      {/* Settings Button */}
+      {/* Settings Button - should consider importing SVG to improve readability */}
       <div className='instructions-container'>
         <button className='settings-button' onClick={toggleSettings}>
           <svg className='settings-icon' xmlns='http://www.w3.org/2000/svg'>
@@ -386,6 +386,7 @@ const GameBoard = () => {
           </svg>
         </button>
       </div>
+
       {/* Settings Modal */}
       {showSettings && (
         <div
@@ -401,6 +402,7 @@ const GameBoard = () => {
               <h2 className='modal-header-text'>Settings</h2>
             </div>
             <div className='modal-content'>
+            
               {/* Gameplay Section */}
               <h3>Gameplay:</h3>
               <div className='toggle-list'>
@@ -438,6 +440,7 @@ const GameBoard = () => {
                   />
                   Cyan
                 </label>
+
                 <label className='theme-toggle'>
                   <input
                     type='radio'
@@ -482,13 +485,12 @@ const GameBoard = () => {
           </div>
         </div>
       )}
-      {/* Confirmation Pop-up */}
+      {/* New Game Confirmation Pop-up */}
       {showConfirmation && (
         <div className='confirmation-overlay'>
           <div className='confirmation-modal'>
             <p>
-              Starting a new game will overwrite all progress. Are you
-              sure?
+              Starting a new game will overwrite all progress. Are you sure?
             </p>
             <div className='confirmation-buttons'>
               <button className='confirm-button' onClick={clearGameState}>
@@ -509,6 +511,7 @@ const GameBoard = () => {
           ?
         </button>
       </div>
+
       {/* Instructions Modal */}
       {showInstructions && (
         <div
@@ -559,6 +562,8 @@ const GameBoard = () => {
           </div>
         </div>
       )}
+
+      {/* Game board and associated labels and buttons */}
       <div className='level-header'>
         <h2>
           Level {level} -{" "}
