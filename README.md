@@ -7,7 +7,7 @@ A browser-based puzzle game featuring dynamically generated puzzles, efficient g
 
 ## Live Game
 
-🔗 [Play the Game Here](https://ianhallwdjun22.github.io/sorting-game)
+[Click here to play!](https://ianhallwdjun22.github.io/sorting-game)
 
 ## Features
 
