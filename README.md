@@ -1,8 +1,7 @@
-# Sorting Game
-
 ![Alt Text](public/images/readmeHeader.png)
 
 ---
+# Sorting Game
 
 A browser-based puzzle game featuring dynamically generated puzzles, efficient game logic, smooth animations, and interactive user controls. The game challenges players to sort colored tiles into their respective tubes, ensuring each contains only one color. Designed with a clean and modular architecture, the game prioritizes performance, responsiveness, and user customization.
 
