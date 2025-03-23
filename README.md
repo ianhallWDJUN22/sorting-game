@@ -23,7 +23,7 @@ A browser-based puzzle game featuring dynamically generated puzzles, efficient g
 - **Sorting System**  
   - Players can only move tiles to an empty tube or on top of a matching tile.  
   - Moves are validated dynamically to prevent invalid placements.  
-  - Each level increases in complexity with additional tubes and color variations.  
+  - Each difficulty level increases in complexity with additional tubes and color variations.  
 
 - **Game Logic & State Management**  
   - The game board state is managed using React’s `useState` and `useEffect`.  
@@ -34,7 +34,7 @@ A browser-based puzzle game featuring dynamically generated puzzles, efficient g
   - Responsive styling allows this game to be played on any screen size including mobile.  
   - Click-based tube selection with animated transitions for movement feedback.  
   - Toggle-based settings allow theme switching and audio control.  
-  - Settings modal and instructions modal provide intuitive user guidance.  
+  - A settings modal and an instructions modal provide intuitive user guidance.  
 
 - **Customization**  
   - Theme settings modify UI colors dynamically via CSS variables.  
@@ -52,7 +52,7 @@ A browser-based puzzle game featuring dynamically generated puzzles, efficient g
 
 ## Roadmap
 
-- **Accessibility Considerations** – Includes high-contrast mode for better visibility.
+- **Accessibility Considerations** – Include high-contrast mode for better visibility.
 - **Expanded Theme Options** – Introduce additional visual styles beyond the current selections.  
 - **Challenge Modes** – Implement timed puzzles or limited-move challenges for added difficulty. 
 ---
