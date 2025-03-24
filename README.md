@@ -52,6 +52,7 @@ A browser-based puzzle game featuring dynamically generated puzzles, efficient g
 
 ## Roadmap
 
+- **Organize Stylesheets** – Split styling into multiple CSS files for improved organization.
 - **Accessibility Considerations** – Include high-contrast mode for better visibility.
 - **Expanded Theme Options** – Introduce additional visual styles beyond the current selections.  
 - **Challenge Modes** – Implement timed puzzles or limited-move challenges for added difficulty. 

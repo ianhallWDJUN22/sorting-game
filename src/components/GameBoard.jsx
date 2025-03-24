@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { generatePuzzle } from "../utils/gameLogic";
 import "../styles/GameBoard.css";
 import SoundManager from "./SoundManager";
-import themes from "../utils/themes";
+import themes from "../utils/themeConfig";
 
 const GameBoard = () => {
   // State variables to manage game state
@@ -205,21 +205,6 @@ const GameBoard = () => {
     }, 10);
   };
 
-  // Function to progress to the next level and generate a new puzzle
-  const handleNextLevel = () => {
-    setPlayNextLevel(true); // Triggers next level sound
-
-    setTimeout(() => {
-      setLevel((prevLevel) => {
-        const newLevel = prevLevel + 1;
-        setTimeout(() => startNewPuzzle(newLevel), 10);
-        return newLevel;
-      });
-
-      setPlayNextLevel(false); // Reset state after sound plays
-    }, 10);
-  };
-
   // Function to toggle instructions modal
   const toggleInstructions = () => {
     if (showInstructions) {
@@ -278,7 +263,7 @@ const GameBoard = () => {
         ) {
           newTubes[index].push(...movingPieces);
 
-          // Update recently moved pieces for animation
+          // Updates recently moved pieces for animation
           const movePositions = movingPieces.map((_, i) => ({
             tube: index,
             position: newTubes[index].length - 1 - i,
@@ -331,12 +316,27 @@ const GameBoard = () => {
 
     if (allSorted && !isSolved) {
       setIsSolved(true);
-      setPlayLevelClear(true); // Play sound effect
+      setPlayLevelClear(true);
 
       setTimeout(() => {
-        setPlayLevelClear(false); //resets sound
+        setPlayLevelClear(false);
       }, 200);
     }
+  };
+
+  // Function to progress to the next level and generate a new puzzle after a puzzle is solved
+  const handleNextLevel = () => {
+    setPlayNextLevel(true);
+
+    setTimeout(() => {
+      setLevel((prevLevel) => {
+        const newLevel = prevLevel + 1;
+        setTimeout(() => startNewPuzzle(newLevel), 10);
+        return newLevel;
+      });
+
+      setPlayNextLevel(false);
+    }, 10);
   };
 
   // Handles undoing the last move
@@ -402,7 +402,6 @@ const GameBoard = () => {
               <h2 className='modal-header-text'>Settings</h2>
             </div>
             <div className='modal-content'>
-            
               {/* Gameplay Section */}
               <h3>Gameplay:</h3>
               <div className='toggle-list'>
@@ -485,7 +484,7 @@ const GameBoard = () => {
           </div>
         </div>
       )}
-      {/* New Game Confirmation Pop-up */}
+      {/* New Game Confirmation Modal */}
       {showConfirmation && (
         <div className='confirmation-overlay'>
           <div className='confirmation-modal'>
