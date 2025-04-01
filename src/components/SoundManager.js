@@ -12,9 +12,7 @@ const SoundManager = ({ playNextLevel, playReset, playLevelClear, muted }) => {
     resetAudioRef.current = new Audio("/sorting-game/audio/reset2.mp3");
     resetAudioRef.current.volume = muted ? 0 : 0.25;
 
-    levelClearAudioRef.current = new Audio(
-      "/sorting-game/audio/levelClear.wav"
-    );
+    levelClearAudioRef.current = new Audio("/sorting-game/audio/levelClear.wav");
     levelClearAudioRef.current.volume = muted ? 0 : 0.4;
   }, [muted]);
 
