@@ -27,7 +27,7 @@ A browser-based puzzle game featuring dynamically generated puzzles, efficient g
 
 - **Game Logic & State Management**  
   - The game board state is managed using React’s `useState` and `useEffect`.  
-  - Puzzle generation ensures solvability while maintaining randomness.  
+  - Puzzle generation ensures solvability while maintaining randomization.  
   - Game state is saved in local storage to persist across sessions.  
 
 - **User Interaction & UI**
